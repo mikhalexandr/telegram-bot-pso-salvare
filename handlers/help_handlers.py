@@ -1,9 +1,10 @@
-from aiogram import Router, F
+from aiogram import Router, F, Bot
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
+import db
+import consts
 import kb
 from states import LoadInfoStates
-import db
 
 router = Router()
 
@@ -79,10 +80,11 @@ async def name_handler(message: Message, state: FSMContext):
 
 
 @router.message(LoadInfoStates.confirm, F.text.lower() == "да")
-async def name_handler(message: Message, state: FSMContext):
+async def name_handler(message: Message, state: FSMContext, bot: Bot):
     await message.answer("Отлично! Ваш запрос будет рассмотрен в ближайшее время!", reply_markup=kb.first_choose_kb())
     ll = await state.get_data()
-    db.push_info(message.from_user.id, *[ll[key] for key in ll])
+    db.push_checking_info(message.from_user.id, *[ll[key] for key in ll])
+    await bot.send_message(consts.TUTOR_ID, "Новый поиск!", reply_markup=kb.inline_finding_kb())
     await state.clear()
 
 
