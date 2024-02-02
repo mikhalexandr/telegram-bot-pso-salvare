@@ -1,1 +1,1 @@
-Хакатон в Яндекс Лицее
+Telegram bot that helps to find people
