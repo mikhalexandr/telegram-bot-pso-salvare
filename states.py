@@ -1,6 +1,10 @@
 from aiogram.fsm.state import State, StatesGroup
 
 
+class LoadingNameStates(StatesGroup):
+    load_name = State()
+
+
 class LoadInfoStates(StatesGroup):
     load_name = State()
     load_born = State()
