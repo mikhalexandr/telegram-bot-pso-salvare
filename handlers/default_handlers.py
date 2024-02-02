@@ -5,6 +5,7 @@ from aiogram.fsm.context import FSMContext
 import consts
 import kb
 from states import LoadInfoStates
+import db
 
 router = Router()
 
@@ -87,6 +88,8 @@ async def name_handler(message: Message, state: FSMContext):
 @router.message(LoadInfoStates.confirm, F.text.lower() == "да")
 async def name_handler(message: Message, state: FSMContext):
     await message.answer("Отлично! Мы найдем потерявшегося в ближайшее время!", reply_markup=kb.first_choose_kb())
+    ll = await state.get_data()
+    db.push_info(message.from_user.id, *[ll[key] for key in ll])
     await state.clear()
 
 

@@ -4,9 +4,11 @@ import asyncio
 import logging
 import os
 from handlers import default_handlers
+import db
 
 
 async def main():
+    db.create_table()
     bot = Bot(token=os.getenv("BOT_TOKEN"))
     dp = Dispatcher(storage=MemoryStorage())
     dp.include_routers(default_handlers.router, )
