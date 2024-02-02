@@ -1,5 +1,5 @@
 import textwrap
-
+import io
 from PIL import Image, ImageDraw, ImageFont
 
 
@@ -52,5 +52,7 @@ def create_form(lost_name_id, born, regions, description, feature, spec_feature,
         drawer.text((418, y), line, font=font, fill="black")
         y += 25
 
-    image.save(r'data\new_img.png')
-    image.show()
+    buf = io.BytesIO()
+    image.save(buf, format="png")
+    buf.seek(0)
+    return buf
