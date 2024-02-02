@@ -13,3 +13,8 @@ class LoadInfoStates(StatesGroup):
     load_photo = State()
     confirm = State()
     confirm_restart = State()
+
+
+class TutorStates(StatesGroup):
+    descript_reject = State()
+    descript_accept = State()
