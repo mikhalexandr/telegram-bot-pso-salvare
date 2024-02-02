@@ -15,6 +15,10 @@ def create_table():
             checking (user_id TEXT, lost_name_id TEXT, born TEXT, regions TEXT, description TEXT, feature TEXT, 
             spec_feature TEXT, clothes TEXT, items TEXT, photo TEXT)
         """)
+    cur.execute("""
+                CREATE TABLE IF NOT EXISTS
+                people (user_id TEXT, name TEXT)
+            """)
 
 
 def push_lost_info(user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo):
@@ -59,4 +63,16 @@ def delete_checking(lost_name_id):
     DELETE FROM checking
     WHERE lost_name_id = ?"""
     cur.execute(req, (lost_name_id,))
+    con.commit()
+
+
+def add_human(user_id, name):
+    req1 = """SELECT FROM people WHERE user_id = ?"""
+    req2 = """UPDATE people
+    SET name = ? WHERE user_id = ?"""
+    req3 = """INSERT INTO people (user_id, name) VALUES (?, ?)"""
+    if cur.execute(req1, (user_id,)).fetchone():
+        cur.execute(req2, (name, user_id))
+    else:
+        cur.execute(req3, (user_id, name))
     con.commit()
