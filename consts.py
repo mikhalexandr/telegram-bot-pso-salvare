@@ -1,1 +1,2 @@
 START_MESSAGE = "start message"
+TUTOR_ID = 6805422617
