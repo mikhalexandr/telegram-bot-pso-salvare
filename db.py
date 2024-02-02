@@ -67,7 +67,7 @@ def delete_checking(lost_name_id):
 
 
 def add_human(user_id, name):
-    req1 = """SELECT FROM people WHERE user_id = ?"""
+    req1 = """SELECT * FROM people WHERE user_id = ?"""
     req2 = """UPDATE people
     SET name = ? WHERE user_id = ?"""
     req3 = """INSERT INTO people (user_id, name) VALUES (?, ?)"""
