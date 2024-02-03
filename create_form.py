@@ -14,7 +14,10 @@ def create_form(lost_name_id, born, regions, description, feature, spec_feature,
 
     font = ImageFont.truetype("calibri.ttf", 50)
     name = lost_name_id.split(" ")
-    drawer.text((418, 60), f"{name[0].upper()}\n{name[1].upper()} {name[2].upper()}", font=font, fill='black')
+    if len(name) != 3:
+        drawer.text((418, 60), f"{lost_name_id}", font=font, fill='black')
+    else:
+        drawer.text((418, 60), f"{name[0].upper()}\n{name[1].upper()} {name[2].upper()}", font=font, fill='black')
 
     font = ImageFont.truetype("calibri.ttf", 25)
     drawer.text((418, 145), f"{born} г. р.", font=font, fill='black')
@@ -26,7 +29,7 @@ def create_form(lost_name_id, born, regions, description, feature, spec_feature,
     lines = textwrap.wrap(description, width=50)
     y = 186
     for line in lines:
-        drawer.text((418, y), line, font=font, fill="black")
+        drawer.text((418, y), line, font=font, fill="red")
         y += 20
 
     font = ImageFont.truetype("calibri.ttf", 35)
