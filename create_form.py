@@ -23,11 +23,11 @@ def create_form(lost_name_id, born, regions, description, feature, spec_feature,
     drawer.text((418, 145), f"{born} г. р.", font=font, fill='black')
 
     font = ImageFont.truetype("calibri.ttf", 25)
-    drawer.text((418, 163), f"{regions}", font=font, fill='red')
+    drawer.text((418, 165), f"{regions}", font=font, fill='red')
 
     font = ImageFont.truetype("calibri.ttf", 25)
     lines = textwrap.wrap(description, width=50)
-    y = 186
+    y = 188
     for line in lines:
         drawer.text((418, y), line, font=font, fill="red")
         y += 20

@@ -45,3 +45,7 @@ async def send_accept_msg(message: Message, state: FSMContext, bot: Bot):
     for user in db.get_all():
         await bot.send_photo(user, ll["photo"], caption=message.text)
     await state.clear()
+
+# @router.callback_query(TutorStates.check_alarmik)
+# async def check_alarmik(callback: CallbackQuery, state: FSMContext, bot: Bot):
+#     info = db.get_alarmik()

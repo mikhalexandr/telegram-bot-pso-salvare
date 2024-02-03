@@ -25,7 +25,7 @@ def create_table():
     """)
     cur.execute("""
         CREATE TABLE IF NOT EXISTS
-        alarmiks (cords TEXT, number TEXT, name TEXT, look TEXT, situation TEXT)
+        alarmiks (cords TEXT, number TEXT, name TEXT, charge TEXT, look TEXT, situation TEXT)
     """)
 
 
@@ -113,7 +113,7 @@ def create_team(loser):
 
 
 def add_team_member(member, loser):
-    req2 = """INSERT INTO teams(loser, human) VALUES (?, ?)"""
+    req2 = """INSERT INTO teams(loser, human) VALUES (?, ?) ON CONFLICT (human) DO NOTHING"""
     cur.execute(req2, (loser, member))
     con.commit()
 
@@ -124,10 +124,17 @@ def get_teammates(user_id):
     return cur.execute(req, (user_id, user_id)).fetchall()
 
 
-def add_alarmik(cords, number, name, look, situation):
+def add_alarmik(cords, number, name, charge, look, situation):
     req = """
-            INSERT INTO alarmiks (cords, number, name, look, situation)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO alarmiks (cords, number, name, charge, look, situation)
+            VALUES (?, ?, ?, ?, ?, ?)
         """
-    cur.execute(req, (cords, number, name, look, situation))
+    cur.execute(req, (cords, number, name, charge, look, situation))
     con.commit()
+
+
+def get_alarmik():
+    req = """
+        SELECT * FROM alarmiks
+    """
+    return cur.execute(req,).fetchall()

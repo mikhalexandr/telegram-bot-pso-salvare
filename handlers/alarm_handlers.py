@@ -31,9 +31,16 @@ async def name_handler(message: Message, state: FSMContext):
     await state.set_state(AlarmStates.name)
 
 
-@router.message(AlarmStates.name)
-async def look_handler(message: Message, state: FSMContext):
+@router.message(AlarmStates.name, F.text)
+async def charge_handler(message: Message, state: FSMContext):
     await state.update_data(name=message.text)
+    await message.answer("Пожалуйста, впиишите уровень заряда вашего устройства")
+    await state.set_state(AlarmStates.charge)
+
+
+@router.message(AlarmStates.charge, F.text)
+async def look_handler(message: Message, state: FSMContext):
+    await state.update_data(charge=message.text)
     await message.answer("Опишите то, как вы сейчас выглядите: во что одеты, цвет волос, рост, телосложение")
     await state.set_state(AlarmStates.look)
 
