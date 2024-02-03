@@ -40,4 +40,7 @@ async def send_reject_msg(message: Message, state: FSMContext, bot: Bot):
 @router.message(TutorStates.descript_accept, F.text)
 async def send_accept_msg(message: Message, state: FSMContext, bot: Bot):
     await bot.send_message((await state.get_data())["user_id"], f"Ваш поиск принят!")
+    ll = await state.get_data()
+    for user in db.get_all():
+        await bot.send_photo(consts.TUTOR_ID, ll["photo"])
     await state.clear()

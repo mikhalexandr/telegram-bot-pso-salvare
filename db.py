@@ -76,3 +76,9 @@ def add_human(user_id, name):
     else:
         cur.execute(req3, (user_id, name))
     con.commit()
+
+
+def get_all():
+    req = """SELECT user_id FROM people"""
+    result = cur.execute(req).fetchall()
+    return result
