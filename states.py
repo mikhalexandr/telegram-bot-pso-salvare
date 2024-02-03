@@ -22,3 +22,11 @@ class LoadInfoStates(StatesGroup):
 class TutorStates(StatesGroup):
     descript_reject = State()
     descript_accept = State()
+
+
+class AlarmStates(StatesGroup):
+    geodata = State()
+    mobile = State()
+    look = State()
+    situation = State()
+    note = State()
