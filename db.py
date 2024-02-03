@@ -20,8 +20,12 @@ def create_table():
                 people (user_id TEXT, name TEXT)
             """)
     cur.execute("""
-    CREATE TABLE IF NOT EXISTS
-    teams (id INTEGER PRIMARY KEY AUTOINCREMENT, loser TEXT, human TEXT UNIQUE)
+        CREATE TABLE IF NOT EXISTS
+        teams (id INTEGER PRIMARY KEY AUTOINCREMENT, loser TEXT, human TEXT UNIQUE)
+    """)
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS
+        alarmiks (alarmik_name TEXT, cords TEXT , mobile TEXT , look TEXT, situation TEXT)
     """)
 
 
@@ -118,3 +122,12 @@ def get_teammates(user_id):
     req = """SELECT human FROM teams WHERE loser = (
     SELECT loser FROM teams WHERE human = ?) AND human != ?"""
     return cur.execute(req, (user_id, user_id)).fetchall()
+
+
+def add_alarmik(alarmik_name, cords, mobile, look, situation):
+    req = """
+            INSERT INTO checking (alarmik_name, cords, mobile, look, situation)
+            VALUES (?, ?, ?, ?, ?)
+        """
+    cur.execute(req, (alarmik_name, cords, mobile, look, situation))
+    con.commit()

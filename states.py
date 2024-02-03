@@ -27,6 +27,7 @@ class TutorStates(StatesGroup):
 class AlarmStates(StatesGroup):
     geodata = State()
     mobile = State()
+    name = State()
     look = State()
     situation = State()
     note = State()

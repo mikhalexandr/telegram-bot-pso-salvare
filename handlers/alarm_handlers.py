@@ -24,10 +24,17 @@ async def mobile_handler(message: Message, state: FSMContext):
 
 
 @router.message(AlarmStates.mobile)
-async def look_handler(message: Message, state: FSMContext):
+async def name_handler(message: Message, state: FSMContext):
     await state.update_data(mobile=message.contact)
-    await message.answer("Опишите то, как вы сейчас выглядите: во что одеты, цвет волос, рост, телосложение",
+    await message.answer("Назовите свое имя, фамилию и отчество",
                          reply_markup=kb.ReplyKeyboardRemove())
+    await state.set_state(AlarmStates.name)
+
+
+@router.message(AlarmStates.name)
+async def look_handler(message: Message, state: FSMContext):
+    await state.update_data(name=message.contact)
+    await message.answer("Опишите то, как вы сейчас выглядите: во что одеты, цвет волос, рост, телосложение")
     await state.set_state(AlarmStates.look)
 
 
@@ -41,6 +48,9 @@ async def situation_handler(message: Message, state: FSMContext):
 @router.message(AlarmStates.situation, F.text)
 async def note_handler(message: Message, state: FSMContext):
     await state.update_data(situation=message.text)
+    ll = await state.get_data()
+    print(ll)
+    db.add_alarmik(message.from_user.id, *[ll[key] for key in ll])
     await message.answer("Информация передана, скоро прибудет помощь! "
                          "Сохраняйте спокойствие, не уходите далеко от вашей нынешней геолокации "
                          "и соблюдайте меры предосторожности!")
