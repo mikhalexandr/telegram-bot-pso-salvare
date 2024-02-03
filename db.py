@@ -25,7 +25,7 @@ def create_table():
     """)
     cur.execute("""
         CREATE TABLE IF NOT EXISTS
-        alarmiks (alarmik_name TEXT, cords TEXT , mobile TEXT , look TEXT, situation TEXT)
+        alarmiks (cords TEXT, number TEXT, name TEXT, look TEXT, situation TEXT)
     """)
 
 
@@ -124,10 +124,10 @@ def get_teammates(user_id):
     return cur.execute(req, (user_id, user_id)).fetchall()
 
 
-def add_alarmik(alarmik_name, cords, mobile, look, situation):
+def add_alarmik(cords, number, name, look, situation):
     req = """
-            INSERT INTO checking (alarmik_name, cords, mobile, look, situation)
+            INSERT INTO alarmiks (cords, number, name, look, situation)
             VALUES (?, ?, ?, ?, ?)
         """
-    cur.execute(req, (alarmik_name, cords, mobile, look, situation))
+    cur.execute(req, (cords, number, name, look, situation))
     con.commit()

@@ -17,7 +17,7 @@ async def geo_handler(message: Message, state: FSMContext):
 
 @router.message(AlarmStates.geodata)
 async def mobile_handler(message: Message, state: FSMContext):
-    await state.update_data(geo=message.location)
+    await state.update_data(geo=(str(message.location.longitude) + " " + str(message.location.latitude)))
     await message.answer("Отлично, мы получили геопозицию. Теперь пришлите Ваш номер телефона!",
                          reply_markup=kb.contact_kb())
     await state.set_state(AlarmStates.mobile)
@@ -25,7 +25,7 @@ async def mobile_handler(message: Message, state: FSMContext):
 
 @router.message(AlarmStates.mobile)
 async def name_handler(message: Message, state: FSMContext):
-    await state.update_data(mobile=message.contact)
+    await state.update_data(mobile=message.contact.phone_number)
     await message.answer("Назовите свое имя, фамилию и отчество",
                          reply_markup=kb.ReplyKeyboardRemove())
     await state.set_state(AlarmStates.name)
@@ -33,7 +33,7 @@ async def name_handler(message: Message, state: FSMContext):
 
 @router.message(AlarmStates.name)
 async def look_handler(message: Message, state: FSMContext):
-    await state.update_data(name=message.contact)
+    await state.update_data(name=message.text)
     await message.answer("Опишите то, как вы сейчас выглядите: во что одеты, цвет волос, рост, телосложение")
     await state.set_state(AlarmStates.look)
 
@@ -50,7 +50,7 @@ async def note_handler(message: Message, state: FSMContext):
     await state.update_data(situation=message.text)
     ll = await state.get_data()
     print(ll)
-    db.add_alarmik(message.from_user.id, *[ll[key] for key in ll])
+    db.add_alarmik(*[ll[key] for key in ll])
     await message.answer("Информация передана, скоро прибудет помощь! "
                          "Сохраняйте спокойствие, не уходите далеко от вашей нынешней геолокации "
                          "и соблюдайте меры предосторожности!")
