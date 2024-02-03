@@ -21,7 +21,7 @@ def create_table():
             """)
     cur.execute("""
     CREATE TABLE IF NOT EXISTS
-    teams (id INTEGER PRIMARY KEY AUTOINCREMENT, loser TEXT, human TEXT)
+    teams (id INTEGER PRIMARY KEY AUTOINCREMENT, loser TEXT, human TEXT UNIQUE)
     """)
 
 
@@ -109,12 +109,8 @@ def create_team(loser):
 
 
 def add_team_member(member, loser):
-    req1 = """SELECT * FROM teams WHERE human = NULL"""
     req2 = """INSERT INTO teams(loser, human) VALUES (?, ?)"""
-    if cur.execute(req1).fetchone() is None:
-        cur.execute("""UPDATE teams SET human = ?""", (member,))
-    else:
-        cur.execute(req2, (loser, member))
+    cur.execute(req2, (loser, member))
     con.commit()
 
 

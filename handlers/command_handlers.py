@@ -34,7 +34,8 @@ async def send_teammates(message: Message, command: CommandObject, bot: Bot):
         return
     msg = db.get_human(message.from_user.id) + ": " + " ".join(command.args)
     for teammate in db.get_teammates(message.from_user.id):
-        await bot.send_message(teammate, msg)
+        if teammate[0]:
+            await bot.send_message(teammate[0], msg)
 
 
 @router.callback_query(CommandStates.choosing)
