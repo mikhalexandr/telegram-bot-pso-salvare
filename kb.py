@@ -20,3 +20,9 @@ def inline_finding_kb():
     builder.row(InlineKeyboardButton(text="В поиск!", callback_data="letsfind"),
                 InlineKeyboardButton(text="Отклонить", callback_data="reject"))
     return builder.as_markup()
+
+
+def join_command_kb(lost_name):
+    builder = InlineKeyboardBuilder()
+    builder.row(InlineKeyboardButton(text="Присоединиться!", callback_data=lost_name))
+    return builder.as_markup()

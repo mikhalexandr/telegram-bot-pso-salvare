@@ -45,7 +45,16 @@ def get_lost_info(lost_name_id):
         FROM lost
         WHERE lost_name_id = ?
     """
-    result = cur.execute(req, (lost_name_id,)).fetchall()
+    result = cur.execute(req, (lost_name_id,)).fetchone()
+    return result
+
+
+def get_all_lost_info():
+    req = """
+        SELECT user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo 
+        FROM lost
+    """
+    result = cur.execute(req).fetchall()
     return result
 
 
