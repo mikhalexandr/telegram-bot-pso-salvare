@@ -5,6 +5,7 @@ from states import AlarmStates
 import consts
 import db
 import kb
+import map
 
 router = Router()
 
@@ -17,7 +18,7 @@ async def geo_handler(message: Message, state: FSMContext):
 
 @router.message(AlarmStates.geodata)
 async def mobile_handler(message: Message, state: FSMContext):
-    await state.update_data(geo=(str(message.location.longitude) + " " + str(message.location.latitude)))
+    await state.update_data(geo=(str(message.location.longitude) + "," + str(message.location.latitude)))
     await message.answer("Отлично, мы получили геопозицию. Теперь пришлите Ваш номер телефона!",
                          reply_markup=kb.contact_kb())
     await state.set_state(AlarmStates.mobile)
