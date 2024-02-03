@@ -32,3 +32,15 @@ def back_kb():
     kb = [[KeyboardButton(text="Назад")]]
     keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
     return keyboard
+
+
+def geo_kb():
+    kb = [[KeyboardButton(text="Отправить геопозицию", request_location=True)]]
+    keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
+    return keyboard
+
+
+def contact_kb():
+    kb = [[KeyboardButton(text="Отправить контакт", request_contact=True)]]
+    keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
+    return keyboard

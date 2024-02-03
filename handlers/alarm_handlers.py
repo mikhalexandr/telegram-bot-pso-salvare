@@ -10,35 +10,37 @@ router = Router()
 
 
 @router.message(F.text.lower() == "мне срочно нужна помощь!")
-async def help_message_handler(message: Message, state: FSMContext):
-    await message.answer("Сохраняйте спокойствие! Первым делом пришлите нам свою геопозицию!", reply_markup=kb.ReplyKeyboardRemove())
+async def geo_handler(message: Message, state: FSMContext):
+    await message.answer("Сохраняйте спокойствие! Первым делом пришлите нам свою геопозицию!", reply_markup=kb.geo_kb())
     await state.set_state(AlarmStates.geodata)
     
 
-@router.message(AlarmStates.geodata, F.text)
-async def born_handler(message: Message, state: FSMContext):
-    await state.update_data(name=message.text)
-    await message.answer("Отлично, мы получили геопозицию. Теперь ввведите Ваш номер телефона!")
+@router.message(AlarmStates.geodata)
+async def mobile_handler(message: Message, state: FSMContext):
+    await state.update_data(geo=message.location)
+    await message.answer("Отлично, мы получили геопозицию. Теперь пришлите Ваш номер телефона!",
+                         reply_markup=kb.contact_kb())
     await state.set_state(AlarmStates.mobile)
 
 
-@router.message(AlarmStates.mobile, F.text)
-async def regions_handler(message: Message, state: FSMContext):
-    await state.update_data(born=message.text)
-    await message.answer("Опишите то, как вы сейчас выглядите: во что одеты, цвет волос, рост, телосложение")
+@router.message(AlarmStates.mobile)
+async def look_handler(message: Message, state: FSMContext):
+    await state.update_data(mobile=message.contact)
+    await message.answer("Опишите то, как вы сейчас выглядите: во что одеты, цвет волос, рост, телосложение",
+                         reply_markup=kb.ReplyKeyboardRemove())
     await state.set_state(AlarmStates.look)
 
 
 @router.message(AlarmStates.look, F.text)
-async def regions_handler(message: Message, state: FSMContext):
-    await state.update_data(born=message.text)
-    await message.answer("Итак:")
-    await state.set_state(AlarmStates.check)
+async def situation_handler(message: Message, state: FSMContext):
+    await state.update_data(look=message.text)
+    await message.answer("Как вы попали в эту ситуацию? Что вас окружает?")
+    await state.set_state(AlarmStates.situation)
 
 
-@router.message(AlarmStates.check, F.text)
-async def regions_handler(message: Message, state: FSMContext):
-    await state.update_data(born=message.text)
+@router.message(AlarmStates.situation, F.text)
+async def note_handler(message: Message, state: FSMContext):
+    await state.update_data(situation=message.text)
     await message.answer("Информация передана, скоро прибудет помощь! "
                          "Сохраняйте спокойствие, не уходите далеко от вашей нынешней геолокации "
                          "и соблюдайте меры предосторожности!")
