@@ -70,24 +70,23 @@ def gen(prom, dirr="res"):
 
     # Открываем файл для записи бинарных данных изображения
     try:
-        with open(f"{dirr}/{prom.split('.')[0]} _ {r(0, 100000)}.jpg", "wb") as file:
+        with open("generated.jpg", "wb") as file:
             file.write(image_data)
     except:
-        with open(f"{dirr}/{prom.split('.')[0]} _ {r(0, 100000)}.jpg", "w+") as file:
+        with open("generated.jpg", "w+") as file:
             file.write(image_data)
 
 
 #
 
+def generate(zapros):
+    try:
+        os.mkdir(os.getcwd().replace("\\", "/") + f'/' + zapros.replace("\n", " ").split(".")[0])
+    except FileExistsError:
+        print('exist')
 
-zapros = input("prompt: ")
-try:
-    os.mkdir(os.getcwd().replace("\\", "/") + f'/' + zapros.replace("\n", " ").split(".")[0])
-except FileExistsError:
-    print('exist')
+    for j in range(1):
+        gen(zapros.replace("\n", " "), zapros.replace("\n", " ").split(".")[0])
+        print(f"сделано {j + 1}")
 
-for j in range(1):
-    gen(zapros.replace("\n", " "), zapros.replace("\n", " ").split(".")[0])
-    print(f"сделано {j + 1}")
-
-print("завершено")
+    print("завершено")

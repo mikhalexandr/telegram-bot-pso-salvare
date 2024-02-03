@@ -1,6 +1,8 @@
+import os
+
 from aiogram import Router, F, Bot
 import emoji
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import Message, CallbackQuery, FSInputFile
 from aiogram.fsm.context import FSMContext
 from aiogram.enums import ParseMode
 from states import TutorStates
@@ -8,6 +10,7 @@ import consts
 import map
 import db
 from filters import TutorFilter
+import generate_by_request
 
 router = Router()
 router.message.filter(TutorFilter())
@@ -53,6 +56,9 @@ async def send_accept_msg(message: Message, state: FSMContext, bot: Bot):
 @router.callback_query(F.data == "letsalarm")
 async def accept_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
     ll = db.get_alarmik()
+    generate_by_request.generate(ll[4])
+    p = await bot.send_photo(consts.TUTOR_ID, FSInputFile("generated.jpg"))
+    await p.delete()
     for user in db.get_all():
         await bot.send_message(user, emoji.emojize(
             f"<b>:collision:ВНИМАНИЕ!!! ЧЕЛОВЕК В ОПАСНОСТИ!!!:collision:</b>\nПоследняя геолокация:"
@@ -62,4 +68,5 @@ async def accept_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
             f"Был одет: {ll[4]}\nОписание человеком окружающей среды: {ll[5]}"),
                                parse_mode=ParseMode.HTML)
         await bot.send_photo(user, map.create_map(ll[0]))
+        await bot.send_photo(user, p.photo[-1].file_id, caption="Изображение пострадавшего, сгенерированное нейросетью")
     await callback.answer()
