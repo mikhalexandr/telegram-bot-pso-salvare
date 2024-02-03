@@ -3,7 +3,8 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 
 def first_choose_kb():
-    kb = [[KeyboardButton(text="Помогите найти!")], [KeyboardButton(text="Хочу помочь в поисках!")]]
+    kb = [[KeyboardButton(text="Помогите найти!")], [KeyboardButton(text="Хочу помочь в поисках!")],
+          [KeyboardButton(text="Мне срочно нужна помощь!")]]
     keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
     return keyboard
 
