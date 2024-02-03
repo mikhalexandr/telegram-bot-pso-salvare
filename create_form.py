@@ -21,14 +21,14 @@ def create_form(lost_name_id, born, regions, description, feature, spec_feature,
         drawer.text((418, 60), f"{name[0].upper()}\n{name[1].upper()} {name[2].upper()}", font=font, fill='black')
 
     font = ImageFont.truetype("calibri.ttf", 25)
-    drawer.text((418, 145), f"{born} г. р.", font=font, fill='black')
+    drawer.text((418, 150), f"{born} г. р.", font=font, fill='black')
 
     font = ImageFont.truetype("calibri.ttf", 25)
-    drawer.text((418, 163), f"{regions}", font=font, fill='red')
+    drawer.text((418, 175), f"{regions}", font=font, fill='red')
 
     font = ImageFont.truetype("calibri.ttf", 25)
     lines = textwrap.wrap(description, width=50)
-    y = 186
+    y = 195
     for line in lines:
         drawer.text((418, y), line, font=font, fill="red")
         y += 20
@@ -66,4 +66,4 @@ def create_form(lost_name_id, born, regions, description, feature, spec_feature,
     image.show()
 
 
-create_form("Иванов Иван Иванович", "1987", "Смоленская область", "потерялся тогда сделал то обидел того сделал так","одето то одето это одето тооооооооо", "носит усы", "куртка синяя штаны красные", "атймес то то т от от от от от от оавл ыоравша ры", "data/ico.png")
+create_form("Иванов Ванек Гигачадович", "1987", "Смоленская область", "потерялся тогда сделал то обидел того сделал так","одето то одето это одето тооооооооо", "носит усы", "куртка синяя штаны красные", "атймес то то т от от от от от от оавл ыоравша ры", "data/ico.png")
