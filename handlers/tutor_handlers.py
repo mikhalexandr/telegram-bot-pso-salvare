@@ -1,10 +1,11 @@
 from aiogram import Router, F, Bot
-from aiogram.enums import ParseMode
+import emoji
 from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
+from aiogram.enums import ParseMode
 from states import TutorStates
 import consts
-import emoji
+import map
 import db
 from filters import TutorFilter
 
@@ -51,21 +52,14 @@ async def send_accept_msg(message: Message, state: FSMContext, bot: Bot):
 
 @router.callback_query(F.data == "letsalarm")
 async def accept_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
-    info = db.get_checking_info()
-    await state.set_state(TutorStates.descript_accept)
-    await state.update_data(user_id=info[0], photo=info[-1], loser_name=info[1])
-    db.delete_checking(info[1])
-    db.push_lost_info(*info)
-    ll = await state.get_data()
-    print(ll)
-    await bot.send_message(consts.TUTOR_ID,
-                           emoji.emojize(
-                               f"<b>:collision:ВНИМАНИЕ!!! ЧЕЛОВЕК В ОПАСНОСТИ!!!:collision:</b>\nПоследняя геолокация:"
-                               f"{ll['geo']}\n"
-                               f"Номер телефона:{ll['mobile']}\nФИО:{ll['name']}\nУровень заряда аккумулятора:"
-                               f"{ll['charge']}\n"
-                               f"Был одет:{ll['look']}\nОписание человеком окружающей среды:{ll['situation']}"),
-                           parse_mode=ParseMode.HTML
-                           )
-    await bot.send_message(consts.TUTOR_ID, "Введите полную информацию про поиск:")
+    ll = db.get_alarmik()
+    for user in db.get_all():
+        await bot.send_message(user, emoji.emojize(
+            f"<b>:collision:ВНИМАНИЕ!!! ЧЕЛОВЕК В ОПАСНОСТИ!!!:collision:</b>\nПоследняя геолокация:"
+            f"{ll[0]}\n"
+            f"Номер телефона: {ll[1]}\nФИО: {ll[2]}\nУровень заряда аккумулятора: "
+            f"{ll[3]}\n"
+            f"Был одет: {ll[4]}\nОписание человеком окружающей среды: {ll[5]}"),
+                               parse_mode=ParseMode.HTML)
+        await bot.send_photo(user, map.create_map(ll[0]))
     await callback.answer()

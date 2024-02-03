@@ -1,6 +1,10 @@
 from aiogram import Router, F, Bot
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import Message
+from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
+import emoji
+
+import map
 from states import AlarmStates
 import consts
 import db
@@ -53,12 +57,21 @@ async def situation_handler(message: Message, state: FSMContext):
 
 
 @router.message(AlarmStates.situation, F.text)
-async def note_handler(message: Message, state: FSMContext):
+async def note_handler(message: Message, state: FSMContext, bot: Bot):
     await state.update_data(situation=message.text)
     ll = await state.get_data()
-    print(ll)
     db.add_alarmik(*[ll[key] for key in ll])
     await message.answer("Информация передана, скоро прибудет помощь! "
                          "Сохраняйте спокойствие, не уходите далеко от вашей нынешней геолокации "
-                         "и соблюдайте меры предосторожности!", reply_markup=kb.inline_alarming_kb())
+                         "и соблюдайте меры предосторожности!")
+    await bot.send_message(consts.TUTOR_ID,
+                           emoji.emojize(
+                               f"<b>:collision:ВНИМАНИЕ!!! ЧЕЛОВЕК В ОПАСНОСТИ!!!:collision:</b>\nПоследняя геолокация: "
+                               f"{ll['geo']}\n"
+                               f"Номер телефона: {ll['mobile']}\nФИО: {ll['name']}\nУровень заряда аккумулятора: "
+                               f"{ll['charge']}\n"
+                               f"Был одет: {ll['look']}\nОписание человеком окружающей среды: {ll['situation']}"),
+                           parse_mode=ParseMode.HTML, reply_markup=kb.inline_alarming_kb()
+                           )
+    await bot.send_photo(consts.TUTOR_ID, map.create_map(ll["geo"]))
     await state.set_state(AlarmStates.note)

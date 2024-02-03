@@ -137,4 +137,4 @@ def get_alarmik():
     req = """
         SELECT * FROM alarmiks
     """
-    return cur.execute(req,).fetchall()
+    return cur.execute(req,).fetchone()
