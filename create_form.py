@@ -1,12 +1,13 @@
 import textwrap
-import io
 from PIL import Image, ImageDraw, ImageFont
+from aiogram.types import FSInputFile
+import os
 
 
 def create_form(lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo):
     image = Image.open(r"data\empty-form.jpg")
     drawer = ImageDraw.Draw(image)
-    im2 = Image.open(f'{photo}')
+    im2 = Image.open(f'photo{photo}.jpg')
     im2_n = im2.resize((290, 390))
 
     image.paste(im2_n, (75, 80))
@@ -52,7 +53,7 @@ def create_form(lost_name_id, born, regions, description, feature, spec_feature,
         drawer.text((418, y), line, font=font, fill="black")
         y += 25
 
-    buf = io.BytesIO()
-    image.save(buf, format="png")
-    buf.seek(0)
-    return buf
+    image.save(f"image{photo}.jpg")
+    res = FSInputFile(f"image{photo}.jpg")
+    os.system(f"del photo{photo}.jpg")
+    return res

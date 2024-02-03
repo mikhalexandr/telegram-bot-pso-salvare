@@ -1,7 +1,7 @@
 from aiogram import Router, F, Bot
 from aiogram.types import Message
-from aiogram.types.input_file import InputFile
 from aiogram.fsm.context import FSMContext
+import os
 import db
 import consts
 import kb
@@ -83,12 +83,12 @@ async def photo_handler(message: Message, state: FSMContext):
 @router.message(LoadInfoStates.load_photo, F.photo)
 async def check_form_handler(message: Message, state: FSMContext):
     await state.update_data(photo=message.photo[-1].file_id)
+    await message.bot.download(file=message.photo[-1].file_id, destination=f"photo{message.photo[-1].file_id}.jpg")
     await message.answer("Ваша заявка принята и выглядит так:")
     ll = await state.get_data()
-    buf = create_form(*[ll[key] for key in ll])
-    photo = InputFile(buf)
+    photo = create_form(*[ll[key] for key in ll])
     await message.answer_photo(photo)
-    buf.close()
+    os.remove(f"image{message.photo[-1].file_id}.jpg")
     await message.answer("Всё верно?", reply_markup=kb.yes_or_no_kb())
     await state.set_state(LoadInfoStates.confirm)
 
