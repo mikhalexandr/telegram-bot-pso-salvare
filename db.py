@@ -25,6 +25,11 @@ def create_table():
     """)
 
 
+def get_human(user_id):
+    req = """SELECT name FROM people WHERE user_id = ?"""
+    return con.execute(req, (str(user_id),)).fetchone()[0]
+
+
 def push_lost_info(user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo):
     req = """
         INSERT INTO lost (user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo)
@@ -111,3 +116,9 @@ def add_team_member(member, loser):
     else:
         cur.execute(req2, (loser, member))
     con.commit()
+
+
+def get_teammates(user_id):
+    req = """SELECT human FROM teams WHERE loser = (
+    SELECT loser FROM teams WHERE human = ?) AND human != ?"""
+    return cur.execute(req, (user_id, user_id)).fetchall()

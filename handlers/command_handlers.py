@@ -1,9 +1,8 @@
-from aiogram import Router, F
+from aiogram import Router, F, Bot
 from aiogram.types import Message, CallbackQuery
+from aiogram.filters import Command, CommandObject
 from aiogram.fsm.context import FSMContext
-import os
 import db
-import consts
 import kb
 from states import CommandStates
 
@@ -27,6 +26,15 @@ async def help_message_handler(message: Message, state: FSMContext):
 async def help_message_handler(message: Message, state: FSMContext):
     await message.answer("Выберите действие", reply_markup=kb.first_choose_kb())
     await state.clear()
+
+
+@router.message(Command("chat"))
+async def send_teammates(message: Message, command: CommandObject, bot: Bot):
+    if command.args is None:
+        return
+    msg = db.get_human(message.from_user.id) + ": " + " ".join(command.args)
+    for teammate in db.get_teammates(message.from_user.id):
+        await bot.send_message(teammate, msg)
 
 
 @router.callback_query(CommandStates.choosing)
