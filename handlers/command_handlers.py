@@ -5,6 +5,7 @@ import os
 import db
 import consts
 import kb
+from states import CommandStates
 
 router = Router()
 
@@ -15,6 +16,13 @@ async def send_lost(msg: Message, lost_name, photo):
 
 @router.message(F.text.lower() == "хочу помочь в поисках!")
 async def help_message_handler(message: Message, state: FSMContext):
-    await message.answer("Выберите, кому вы хотите и можете помочь", reply_markup=kb.ReplyKeyboardRemove())
+    await message.answer("Выберите, кому вы хотите и можете помочь", reply_markup=kb.back_kb())
     for args in db.get_all_lost_info():
         await send_lost(message, args[1], args[-1])
+    await state.set_state(CommandStates.choosing)
+
+
+@router.message(CommandStates.choosing, F.text.lower() == "назад")
+async def help_message_handler(message: Message, state: FSMContext):
+    await message.answer("Выберите действие", reply_markup=kb.first_choose_kb())
+    await state.clear()

@@ -26,3 +26,9 @@ def join_command_kb(lost_name):
     builder = InlineKeyboardBuilder()
     builder.row(InlineKeyboardButton(text="Присоединиться!", callback_data=lost_name))
     return builder.as_markup()
+
+
+def back_kb():
+    kb = [[KeyboardButton(text="Назад")]]
+    keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
+    return keyboard

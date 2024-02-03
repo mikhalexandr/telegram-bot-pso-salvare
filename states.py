@@ -30,3 +30,8 @@ class AlarmStates(StatesGroup):
     look = State()
     situation = State()
     note = State()
+
+
+class CommandStates(StatesGroup):
+    choosing = State()
+
