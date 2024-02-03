@@ -81,4 +81,4 @@ def add_human(user_id, name):
 def get_all():
     req = """SELECT user_id FROM people"""
     result = cur.execute(req).fetchall()
-    return result
+    return [i[0] for i in result]
