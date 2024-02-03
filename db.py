@@ -19,6 +19,10 @@ def create_table():
                 CREATE TABLE IF NOT EXISTS
                 people (user_id TEXT, name TEXT)
             """)
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS
+    teams (id INTEGER PRIMARY KEY AUTOINCREMENT, loser TEXT, human TEXT)
+    """)
 
 
 def push_lost_info(user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo):
@@ -91,3 +95,19 @@ def get_all():
     req = """SELECT user_id FROM people"""
     result = cur.execute(req).fetchall()
     return [i[0] for i in result]
+
+
+def create_team(loser):
+    req = """INSERT INTO teams(loser, human) VALUES (?, NULL)"""
+    cur.execute(req, (loser,))
+    con.commit()
+
+
+def add_team_member(member, loser):
+    req1 = """SELECT * FROM teams WHERE human = NULL"""
+    req2 = """INSERT INTO teams(loser, human) VALUES (?, ?)"""
+    if cur.execute(req1).fetchone() is None:
+        cur.execute("""UPDATE teams SET human = ?""", (member,))
+    else:
+        cur.execute(req2, (loser, member))
+    con.commit()
