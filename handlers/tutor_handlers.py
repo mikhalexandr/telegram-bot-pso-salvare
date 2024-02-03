@@ -46,6 +46,13 @@ async def send_accept_msg(message: Message, state: FSMContext, bot: Bot):
         await bot.send_photo(user, ll["photo"], caption=message.text)
     await state.clear()
 
-# @router.callback_query(TutorStates.check_alarmik)
-# async def check_alarmik(callback: CallbackQuery, state: FSMContext, bot: Bot):
-#     info = db.get_alarmik()
+
+@router.callback_query(F.data == "letsalarm")
+async def accept_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
+    info = db.get_checking_info()
+    await state.set_state(TutorStates.descript_accept)
+    await state.update_data(user_id=info[0], photo=info[-1], loser_name=info[1])
+    db.delete_checking(info[1])
+    db.push_lost_info(*info)
+    await bot.send_message(consts.TUTOR_ID, "Введите полную информацию про поиск:")
+    await callback.answer()

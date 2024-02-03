@@ -25,8 +25,12 @@ def create_table():
     """)
     cur.execute("""
         CREATE TABLE IF NOT EXISTS
-        alarmiks (cords TEXT, number TEXT, name TEXT, charge TEXT, look TEXT, situation TEXT)
+        check_alarmiks (cords TEXT, number TEXT, name TEXT, charge TEXT, look TEXT, situation TEXT)
     """)
+    cur.execute("""
+            CREATE TABLE IF NOT EXISTS
+            alarmiks (cords TEXT, number TEXT, name TEXT, charge TEXT, look TEXT, situation TEXT)
+        """)
 
 
 def get_human(user_id):
@@ -130,6 +134,23 @@ def add_alarmik(cords, number, name, charge, look, situation):
             VALUES (?, ?, ?, ?, ?, ?)
         """
     cur.execute(req, (cords, number, name, charge, look, situation))
+    con.commit()
+
+
+def add_check_alarmik(cords, number, name, charge, look, situation):
+    req = """
+            INSERT INTO check_alarmiks (cords, number, name, charge, look, situation)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """
+    cur.execute(req, (cords, number, name, charge, look, situation))
+    con.commit()
+
+
+def delete_checking_alarmik(number):
+    req = """
+        DELETE FROM check_alarmiks
+        WHERE number = ?"""
+    cur.execute(req, (number,))
     con.commit()
 
 

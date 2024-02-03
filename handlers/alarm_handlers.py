@@ -60,5 +60,5 @@ async def note_handler(message: Message, state: FSMContext):
     db.add_alarmik(*[ll[key] for key in ll])
     await message.answer("Информация передана, скоро прибудет помощь! "
                          "Сохраняйте спокойствие, не уходите далеко от вашей нынешней геолокации "
-                         "и соблюдайте меры предосторожности!")
+                         "и соблюдайте меры предосторожности!", reply_markup=kb.inline_alarming_kb())
     await state.set_state(AlarmStates.note)

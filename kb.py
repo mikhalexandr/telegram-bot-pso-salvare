@@ -44,3 +44,11 @@ def contact_kb():
     kb = [[KeyboardButton(text="Отправить контакт", request_contact=True)]]
     keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
     return keyboard
+
+
+def inline_alarming_kb():
+    builder = InlineKeyboardBuilder()
+    builder.row(InlineKeyboardButton(text="Помочь!", callback_data="letsalarm"),
+                InlineKeyboardButton(text="Отклонить", callback_data="alarmreject"))
+    return builder.as_markup()
+
