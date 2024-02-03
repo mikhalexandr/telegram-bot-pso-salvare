@@ -7,7 +7,8 @@ import os
 def create_form(lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo):
     image = Image.open(r"data\empty-form.jpg")
     drawer = ImageDraw.Draw(image)
-    im2 = Image.open(f'photo{photo}.jpg')
+    # im2 = Image.open(f'photo{photo}.jpg')
+    im2 = Image.open(f'{photo}')
     im2_n = im2.resize((290, 390))
 
     image.paste(im2_n, (75, 80))
@@ -56,7 +57,13 @@ def create_form(lost_name_id, born, regions, description, feature, spec_feature,
         drawer.text((418, y), line, font=font, fill="black")
         y += 25
 
-    image.save(f"image{photo}.jpg")
-    res = FSInputFile(f"image{photo}.jpg")
-    os.system(f"del photo{photo}.jpg")
-    return res
+    # image.save(f"image{photo}.jpg")
+    # res = FSInputFile(f"image{photo}.jpg")
+    # os.system(f"del photo{photo}.jpg")
+    # return res
+
+    image.save("new_image.png")
+    image.show()
+
+
+create_form("Иванов Иван Иванович", "1987", "Смоленская область", "потерялся тогда сделал то обидел того сделал так","одето то одето это одето тооооооооо", "носит усы", "куртка синяя штаны красные", "атймес то то т от от от от от от оавл ыоравша ры", "data/ico.png")
