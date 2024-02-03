@@ -82,13 +82,13 @@ async def photo_handler(message: Message, state: FSMContext):
 
 @router.message(LoadInfoStates.load_photo, F.photo)
 async def check_form_handler(message: Message, state: FSMContext):
-    await state.update_data(photo=message.photo[-1].file_id)
     await message.bot.download(file=message.photo[-1].file_id, destination=f"photo{message.photo[-1].file_id}.jpg")
     await message.answer("Ваша заявка принята и выглядит так:")
     ll = await state.get_data()
-    photo = create_form(*[ll[key] for key in ll])
-    await message.answer_photo(photo)
+    photo = create_form(*[ll[key] for key in ll], message.photo[-1].file_id)
+    p = await message.answer_photo(photo)
     os.remove(f"image{message.photo[-1].file_id}.jpg")
+    await state.update_data(photo=p.photo[-1].file_id)
     await message.answer("Всё верно?", reply_markup=kb.yes_or_no_kb())
     await state.set_state(LoadInfoStates.confirm)
 
@@ -98,7 +98,7 @@ async def okay_handler(message: Message, state: FSMContext, bot: Bot):
     await message.answer("Отлично! Ваш запрос будет рассмотрен в ближайшее время!", reply_markup=kb.first_choose_kb())
     ll = await state.get_data()
     db.push_checking_info(message.from_user.id, *[ll[key] for key in ll])
-    await bot.send_message(consts.TUTOR_ID, "Новый поиск!", reply_markup=kb.inline_finding_kb())
+    await bot.send_photo(consts.TUTOR_ID, ll["photo"], reply_markup=kb.inline_finding_kb())
     await state.clear()
 
 
