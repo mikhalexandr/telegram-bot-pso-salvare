@@ -29,6 +29,7 @@ class AlarmStates(StatesGroup):
     mobile = State()
     look = State()
     situation = State()
+    check = State()
     note = State()
 
 
