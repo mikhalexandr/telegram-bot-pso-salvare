@@ -9,7 +9,7 @@ import db
 
 async def main():
     db.create_table()
-    bot = Bot(token=os.getenv("BOT_TOKEN"))
+    bot = Bot(token=os.getenv("BOT_TOKEN"), parse_mode="HTML")
     dp = Dispatcher(storage=MemoryStorage())
     dp.include_routers(tutor_handlers.router, help_handlers.router,
                        command_handlers.router, alarm_handlers.router, default_handlers.router)

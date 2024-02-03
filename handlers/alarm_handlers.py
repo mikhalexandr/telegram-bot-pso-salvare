@@ -5,7 +5,6 @@ from states import AlarmStates
 import consts
 import db
 import kb
-import map
 
 router = Router()
 
