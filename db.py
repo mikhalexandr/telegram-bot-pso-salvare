@@ -29,7 +29,7 @@ def create_table():
     """)
     cur.execute("""
         CREATE TABLE IF NOT EXISTS
-        alarm_users(user_id TEXT)
+        alarm_users(num INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT)
     """)
 
 
@@ -86,8 +86,9 @@ def get_checking_info():
 
 def delete_checking(lost_name_id):
     req = """
-    DELETE FROM checking
-    WHERE lost_name_id = ?"""
+        DELETE FROM checking
+        WHERE lost_name_id = ?
+        """
     cur.execute(req, (lost_name_id,))
     con.commit()
 
@@ -153,7 +154,7 @@ def delete_alarmik(user_id):
     con.commit()
 
 
-def push_alarm_id(user_id):
+def add_alarm_id(user_id):
     req = f"""
         INSERT INTO alarm_users (user_id) VALUES (?)
     """
@@ -164,6 +165,7 @@ def push_alarm_id(user_id):
 def get_alarm_id():
     req = f"""
         SELECT user_id FROM alarm_users
+        WHERE num = 1
     """
     return cur.execute(req).fetchone()
 
@@ -171,6 +173,7 @@ def get_alarm_id():
 def del_alarm_id():
     req = f"""
         DELETE FROM alarm_users
+        WHERE num = 1
     """
     cur.execute(req)
     con.commit()
