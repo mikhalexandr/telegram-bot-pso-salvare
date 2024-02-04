@@ -1,5 +1,4 @@
 import sqlite3
-from handlers import alarm_handlers
 
 con = sqlite3.connect(r"data\db.sqlite")
 cur = con.cursor()
@@ -125,26 +124,26 @@ def get_teammates(user_id):
     return cur.execute(req, (user_id, user_id)).fetchall()
 
 
-def add_alarmik(ID, cords, number, name, charge, look, situation):
+def add_alarmik(id, cords, number, name, charge, look, situation):
     req = """
             INSERT INTO alarmiks (ID, cords, number, name, charge, look, situation)
             VALUES (?, ?, ?, ?, ?, ?, ?)
         """
-    cur.execute(req, (ID, cords, number, name, charge, look, situation))
+    cur.execute(req, (id, cords, number, name, charge, look, situation))
     con.commit()
 
 
-def get_alarmik(ID):
+def get_alarmik(id):
     req = f"""
-        SELECT * FROM alarmiks WHERE ID = {ID}
+        SELECT * FROM alarmiks WHERE ID = ?
     """
-    return cur.execute(req,).fetchone()
+    return cur.execute(req, (id,)).fetchone()
 
 
-def delete_alarmik(ID):
+def delete_alarmik(id):
     req = f"""
         DELETE FROM alarmiks
-        WHERE ID = {ID}
+        WHERE ID = ?
     """
-    cur.execute(req)
+    cur.execute(req, (id,))
     con.commit()
