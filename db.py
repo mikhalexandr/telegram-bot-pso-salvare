@@ -1,4 +1,5 @@
 import sqlite3
+from handlers import alarm_handlers
 
 con = sqlite3.connect(r"data\db.sqlite")
 cur = con.cursor()
@@ -25,7 +26,7 @@ def create_table():
     """)
     cur.execute("""
         CREATE TABLE IF NOT EXISTS
-        alarmiks (cords TEXT, number TEXT, name TEXT, charge TEXT, look TEXT, situation TEXT)
+        alarmiks (ID TEXT, cords TEXT, number TEXT, name TEXT, charge TEXT, look TEXT, situation TEXT)
     """)
 
 
@@ -124,17 +125,26 @@ def get_teammates(user_id):
     return cur.execute(req, (user_id, user_id)).fetchall()
 
 
-def add_alarmik(cords, number, name, charge, look, situation):
+def add_alarmik(ID, cords, number, name, charge, look, situation):
     req = """
-            INSERT INTO alarmiks (cords, number, name, charge, look, situation)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO alarmiks (ID, cords, number, name, charge, look, situation)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         """
-    cur.execute(req, (cords, number, name, charge, look, situation))
+    cur.execute(req, (ID, cords, number, name, charge, look, situation))
     con.commit()
 
 
-def get_alarmik():
-    req = """
-        SELECT * FROM alarmiks
+def get_alarmik(ID):
+    req = f"""
+        SELECT * FROM alarmiks WHERE ID = {ID}
     """
     return cur.execute(req,).fetchone()
+
+
+def delete_alarmik(ID):
+    req = f"""
+        DELETE FROM alarmiks
+        WHERE ID = {ID}
+    """
+    cur.execute(req)
+    con.commit()

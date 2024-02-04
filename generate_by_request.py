@@ -80,13 +80,10 @@ def gen(prom, dirr="res"):
 #
 
 def generate(zapros):
-    try:
-        os.mkdir(os.getcwd().replace("\\", "/") + f'/' + zapros.replace("\n", " ").split(".")[0])
-    except FileExistsError:
-        print('exist')
+    # try:
+    #     os.mkdir(os.getcwd().replace("\\", "/") + f'/' + zapros.replace("\n", " ").split(".")[0])
+    # except FileExistsError:
+    #     print('exist')
 
-    for j in range(1):
-        gen(zapros.replace("\n", " "), zapros.replace("\n", " ").split(".")[0])
-        print(f"сделано {j + 1}")
-
+    gen(zapros.replace("\n", " "), zapros.replace("\n", " ").split(".")[0])
     print("завершено")

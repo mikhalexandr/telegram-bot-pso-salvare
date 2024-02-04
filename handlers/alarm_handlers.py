@@ -60,7 +60,7 @@ async def situation_handler(message: Message, state: FSMContext):
 async def note_handler(message: Message, state: FSMContext, bot: Bot):
     await state.update_data(situation=message.text)
     ll = await state.get_data()
-    db.add_alarmik(*[ll[key] for key in ll])
+    db.add_alarmik(message.from_user.id, *[ll[key] for key in ll])
     await message.answer("Информация передана, скоро прибудет помощь! "
                          "Сохраняйте спокойствие, не уходите далеко от вашей нынешней геолокации "
                          "и соблюдайте меры предосторожности!")
