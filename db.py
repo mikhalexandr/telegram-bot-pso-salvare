@@ -29,7 +29,7 @@ def create_table():
     """)
     cur.execute("""
         CREATE TABLE IF NOT EXISTS
-        alarm_users(num INTEGER PRIMARY KEY AUTOINCREMENT, user_id TEXT)
+        alarm_users(user_id TEXT)
     """)
 
 
@@ -165,7 +165,6 @@ def add_alarm_id(user_id):
 def get_alarm_id():
     req = f"""
         SELECT user_id FROM alarm_users
-        WHERE num = 1
     """
     return cur.execute(req).fetchone()
 
@@ -173,7 +172,6 @@ def get_alarm_id():
 def del_alarm_id():
     req = f"""
         DELETE FROM alarm_users
-        WHERE num = 1
     """
     cur.execute(req)
     con.commit()
