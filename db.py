@@ -25,7 +25,11 @@ def create_table():
     """)
     cur.execute("""
         CREATE TABLE IF NOT EXISTS
-        alarmiks (ID TEXT, cords TEXT, number TEXT, name TEXT, charge TEXT, look TEXT, situation TEXT)
+        alarmiks (user_id TEXT, cords TEXT, number TEXT, name TEXT, charge TEXT, look TEXT, situation TEXT)
+    """)
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS
+        alarm_users(user_id TEXT)
     """)
 
 
@@ -76,7 +80,7 @@ def get_checking_info():
         SELECT user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo 
         FROM checking
     """
-    result = cur.execute(req,).fetchone()
+    result = cur.execute(req, ).fetchone()
     return result
 
 
@@ -124,26 +128,50 @@ def get_teammates(user_id):
     return cur.execute(req, (user_id, user_id)).fetchall()
 
 
-def add_alarmik(id, cords, number, name, charge, look, situation):
+def add_alarmik(user_id, cords, number, name, charge, look, situation):
     req = """
-            INSERT INTO alarmiks (ID, cords, number, name, charge, look, situation)
+            INSERT INTO alarmiks (user_id, cords, number, name, charge, look, situation)
             VALUES (?, ?, ?, ?, ?, ?, ?)
         """
-    cur.execute(req, (id, cords, number, name, charge, look, situation))
+    cur.execute(req, (user_id, cords, number, name, charge, look, situation))
     con.commit()
 
 
-def get_alarmik(id):
+def get_alarmik(user_id):
     req = f"""
-        SELECT * FROM alarmiks WHERE ID = ?
+        SELECT * FROM alarmiks WHERE user_id = ?
     """
-    return cur.execute(req, (id,)).fetchone()
+    return cur.execute(req, (user_id,)).fetchone()
 
 
-def delete_alarmik(id):
+def delete_alarmik(user_id):
     req = f"""
         DELETE FROM alarmiks
-        WHERE ID = ?
+        WHERE user_id = ?
     """
-    cur.execute(req, (id,))
+    cur.execute(req, (user_id,))
     con.commit()
+
+
+def push_alarm_id(user_id):
+    req = f"""
+        INSERT INTO alarm_users (user_id) VALUES (?)
+    """
+    cur.execute(req, (user_id,))
+    con.commit()
+
+
+def get_alarm_id():
+    req = f"""
+        SELECT user_id FROM alarm_users
+    """
+    return cur.execute(req).fetchone()
+
+
+def del_alarm_id():
+    req = f"""
+        DELETE FROM alarm_users
+    """
+    cur.execute(req)
+    con.commit()
+

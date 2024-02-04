@@ -6,6 +6,7 @@ from aiogram.types import Message, CallbackQuery, FSInputFile
 from aiogram.fsm.context import FSMContext
 from aiogram.enums import ParseMode
 from states import TutorStates
+import states
 import consts
 import map
 import db
@@ -55,18 +56,21 @@ async def send_accept_msg(message: Message, state: FSMContext, bot: Bot):
 
 @router.callback_query(F.data == "letsalarm")
 async def accept_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
-    ll = db.get_alarmik(callback.from_user.id)
-    db.delete_alarmik(callback.from_user.id)
+    user_inf = str(db.get_alarm_id())[2:-3]
+    print(user_inf)
+    ll = db.get_alarmik(user_inf)
+    db.delete_alarmik(user_inf)
+    db.del_alarm_id()
     generate_by_request.generate(ll[5])
     p = await bot.send_photo(consts.TUTOR_ID, FSInputFile("generated.jpg"))
     await p.delete()
     for user in db.get_all():
         await bot.send_message(user, emoji.emojize(
-            f"<b>:collision:ВНИМАНИЕ!!! ЧЕЛОВЕК В ОПАСНОСТИ!!!:collision:</b>\nПоследняя геолокация:"
-            f"{ll[1]}\n"
+            f"<b>:collision:ВНИМАНИЕ!!! ЧЕЛОВЕК В ОПАСНОСТИ!!!:collision:</b>\nПоследняя геолокация: "
+            f"{ll[1].split(',')[0]}, {ll[1].split(',')[1]}\n"
             f"Номер телефона: {ll[2]}\nФИО: {ll[3]}\nУровень заряда аккумулятора: "
             f"{ll[4]}\n"
-            f"Был одет: {ll[5]}\nОписание человеком окружающей среды: {ll[6]}"),
+            f"Описание человека: {ll[5]}\nОписание окружающей среды: {ll[6]}"),
                                parse_mode=ParseMode.HTML)
         await bot.send_photo(user, map.create_map(ll[1]))
         await bot.send_photo(user, p.photo[-1].file_id, caption="Изображение пострадавшего, сгенерированное нейросетью")

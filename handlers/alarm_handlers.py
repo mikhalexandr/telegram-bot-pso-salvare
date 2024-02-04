@@ -21,7 +21,7 @@ async def geo_handler(message: Message, state: FSMContext):
 
 @router.message(AlarmStates.geodata)
 async def mobile_handler(message: Message, state: FSMContext):
-    await state.update_data(geo=(str(message.location.longitude) + "," + str(message.location.latitude)))
+    await state.update_data(geo=str(message.location.longitude) + "," + str(message.location.latitude))
     await message.answer("Отлично, мы получили геопозицию. Теперь пришлите Ваш номер телефона!",
                          reply_markup=kb.contact_kb())
     await state.set_state(AlarmStates.mobile)
@@ -61,6 +61,7 @@ async def note_handler(message: Message, state: FSMContext, bot: Bot):
     await state.update_data(situation=message.text)
     ll = await state.get_data()
     db.add_alarmik(message.from_user.id, *[ll[key] for key in ll])
+    db.push_alarm_id(message.from_user.id)
     await message.answer("Информация передана, скоро прибудет помощь! "
                          "Сохраняйте спокойствие, не уходите далеко от вашей нынешней геолокации "
                          "и соблюдайте меры предосторожности!")
@@ -70,7 +71,7 @@ async def note_handler(message: Message, state: FSMContext, bot: Bot):
                                f"{ll['geo']}\n"
                                f"Номер телефона: {ll['mobile']}\nФИО: {ll['name']}\nУровень заряда аккумулятора: "
                                f"{ll['charge']}\n"
-                               f"Был одет: {ll['look']}\nОписание человеком окружающей среды: {ll['situation']}"),
+                               f"Описание человека: {ll['look']}\nОписание окружающей среды: {ll['situation']}"),
                            parse_mode=ParseMode.HTML, reply_markup=kb.inline_alarming_kb()
                            )
     await bot.send_photo(consts.TUTOR_ID, map.create_map(ll["geo"]))
