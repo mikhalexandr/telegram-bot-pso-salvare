@@ -41,4 +41,4 @@ async def send_teammates(message: Message, command: CommandObject, bot: Bot):
 @router.callback_query(CommandStates.choosing)
 async def join_team(callback: CallbackQuery, state: FSMContext):
     db.add_team_member((await state.get_data())["id"], callback.data)
-    await callback.answer()
+    await callback.answer("Вы успешно присоединились к команде!")
