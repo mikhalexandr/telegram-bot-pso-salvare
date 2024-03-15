@@ -32,7 +32,7 @@ async def help_message_handler(message: Message, state: FSMContext):
 async def send_teammates(message: Message, command: CommandObject, bot: Bot):
     if command.args is None:
         return
-    msg = db.get_human(message.from_user.id) + ": " + " ".join(command.args)
+    msg = db.get_human(message.from_user.id) + ": " + command.args
     for teammate in db.get_teammates(message.from_user.id):
         if teammate[0]:
             await bot.send_message(teammate[0], msg)
