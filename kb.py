@@ -52,3 +52,8 @@ def inline_alarming_kb():
                 InlineKeyboardButton(text="Отклонить", callback_data="alarmreject"))
     return builder.as_markup()
 
+
+def skip_kb():
+    kb = [[KeyboardButton(text="Пропустить")]]
+    keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
+    return keyboard

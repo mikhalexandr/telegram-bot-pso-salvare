@@ -25,7 +25,7 @@ def create_table():
     """)
     cur.execute("""
         CREATE TABLE IF NOT EXISTS
-        alarmiks (user_id TEXT, cords TEXT, number TEXT, name TEXT, charge TEXT, look TEXT, situation TEXT)
+        alarmiks (user_id TEXT, cords TEXT, number TEXT, name TEXT, charge TEXT, look TEXT, situation TEXT, photo_id TEXT)
     """)
     cur.execute("""
         CREATE TABLE IF NOT EXISTS
@@ -129,12 +129,12 @@ def get_teammates(user_id):
     return cur.execute(req, (user_id, user_id)).fetchall()
 
 
-def add_alarmik(user_id, cords, number, name, charge, look, situation):
+def add_alarmik(user_id, cords, number, name, charge, look, situation, photo=None):
     req = """
-            INSERT INTO alarmiks (user_id, cords, number, name, charge, look, situation)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO alarmiks (user_id, cords, number, name, charge, look, situation, photo_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """
-    cur.execute(req, (user_id, cords, number, name, charge, look, situation))
+    cur.execute(req, (user_id, cords, number, name, charge, look, situation, photo))
     con.commit()
 
 
@@ -175,4 +175,3 @@ def del_alarm_id():
     """
     cur.execute(req)
     con.commit()
-

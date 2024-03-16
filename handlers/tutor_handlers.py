@@ -58,10 +58,12 @@ async def send_accept_msg(message: Message, state: FSMContext, bot: Bot):
 async def accept_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
     user_inf = str(db.get_alarm_id())[2:-3]
     ll = db.get_alarmik(user_inf)
+    photo = ll[7]
     db.delete_alarmik(user_inf)
     db.del_alarm_id()
-    generate_by_request.generate(ll[5])
-    p = await bot.send_photo(consts.TUTOR_ID, FSInputFile("generated.jpg"))
+    if not photo:
+        generate_by_request.generate(ll[5])
+        p = await bot.send_photo(consts.TUTOR_ID, FSInputFile("generated.jpg"), caption="Сгенерированное изображение")
     for user in db.get_all():
         await bot.send_message(user, emoji.emojize(
             f"<b>:collision:ВНИМАНИЕ!!! ЧЕЛОВЕК В ОПАСНОСТИ!!!:collision:</b>\nПоследняя геолокация: "
@@ -71,6 +73,11 @@ async def accept_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
             f"Описание человека: {ll[5]}\nОписание окружающей среды: {ll[6]}"),
                                parse_mode=ParseMode.HTML)
         await bot.send_photo(user, map.create_map(ll[1]))
-        await bot.send_photo(user, p.photo[-1].file_id, caption="Изображение пострадавшего, сгенерированное нейросетью")
-    os.remove("generated.jpg")
+        if photo:
+            await bot.send_photo(user, photo,
+                                 caption="Фотография пострадавшего")
+        else:
+            await bot.send_photo(user, p.photo[-1].file_id, caption="Изображение пострадавшего, сгенерированное нейросетью")
+    if not photo:
+        os.remove("generated.jpg")
     await callback.answer("Рассылка отправлена")

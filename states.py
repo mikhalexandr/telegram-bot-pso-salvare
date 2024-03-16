@@ -32,7 +32,7 @@ class AlarmStates(StatesGroup):
     name = State()
     look = State()
     situation = State()
-    note = State()
+    photo = State()
 
 
 class CommandStates(StatesGroup):
