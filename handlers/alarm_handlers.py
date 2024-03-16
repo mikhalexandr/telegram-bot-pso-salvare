@@ -64,7 +64,7 @@ async def note_handler(message: Message, state: FSMContext, bot: Bot):
     db.add_alarm_id(message.from_user.id)
     await message.answer("Информация передана, скоро прибудет помощь! "
                          "Сохраняйте спокойствие, не уходите далеко от вашей нынешней геолокации "
-                         "и соблюдайте меры предосторожности!")
+                         "и соблюдайте меры предосторожности!", reply_markup=kb.first_choose_kb())
     await bot.send_message(consts.TUTOR_ID,
                            emoji.emojize(
                                f"<b>:collision:ВНИМАНИЕ!!! ЧЕЛОВЕК В ОПАСНОСТИ!!!:collision:</b>\nПоследняя геолокация: "
@@ -75,4 +75,4 @@ async def note_handler(message: Message, state: FSMContext, bot: Bot):
                            parse_mode=ParseMode.HTML, reply_markup=kb.inline_alarming_kb()
                            )
     await bot.send_photo(consts.TUTOR_ID, map.create_map(ll["geo"]))
-    await state.set_state(AlarmStates.note)
+    await state.clear()
