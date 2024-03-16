@@ -123,6 +123,18 @@ def add_team_member(member, loser):
     con.commit()
 
 
+def del_team_member(user_id):
+    req = """DELETE FROM teams WHERE human = ?"""
+    cur.execute(req, (user_id,))
+    con.commit()
+
+
+def is_in_team(user_id):
+    req = """SELECT * FROM teams WHERE human = ?"""
+    res = cur.execute(req, (user_id,)).fetchone()
+    return res
+
+
 def get_teammates(user_id):
     req = """SELECT human FROM teams WHERE loser = (
     SELECT loser FROM teams WHERE human = ?) AND human != ?"""

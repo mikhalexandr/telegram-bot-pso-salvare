@@ -57,3 +57,9 @@ def skip_kb():
     kb = [[KeyboardButton(text="Пропустить")]]
     keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
     return keyboard
+
+
+def leave_team_kb():
+    kb = [[KeyboardButton(text="Назад")], [KeyboardButton(text="Покинуть команду")]]
+    keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
+    return keyboard
