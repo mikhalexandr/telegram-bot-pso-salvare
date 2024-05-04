@@ -1,1 +1,1 @@
-Telegram bot that helps to find people
+Telegram-bot that helps to find people
