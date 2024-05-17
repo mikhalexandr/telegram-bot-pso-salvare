@@ -60,4 +60,3 @@ def create_form(lost_name_id, born, regions, description, feature, spec_feature,
     res = FSInputFile(f"image{photo}.jpg")
     os.system(f"del photo{photo}.jpg")
     return res
-
