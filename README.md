@@ -22,7 +22,7 @@ pip install requirements.txt
 
 * Add this environment variables to the configuration:
 ```
-PYTHONUNBUFFERED=1;BOT_TOKEN=your_tg_bot_token;MAPS_API_KEY=your_yandex_static_api_key
+PYTHONUNBUFFERED=1;BOT_TOKEN=your_tg_bot_token;MAPS_API_KEY=your_yandex_static_api_key;TUTOR_ID=bot's_admin_tg_id
 ```
 
 * Run `main.py`
