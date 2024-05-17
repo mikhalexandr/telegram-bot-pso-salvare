@@ -9,8 +9,8 @@ Telegram-bot that helps send missing persons reports, assemble search teams and 
 ![Aiogram](https://img.shields.io/badge/aiogram-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Pillow](https://img.shields.io/badge/pillow-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
-![Yandex API](https://img.shields.io/badge/yandex_api-FF0000?style=for-the-badge)
-![Kandinsky](https://img.shields.io/badge/kandinsky-%23000000.svg?style=for-the-badge)
+![Yandex Static API](https://img.shields.io/badge/yandex_static_api-FF0000?style=for-the-badge)
+![Kandinsky 3.0](https://img.shields.io/badge/kandinsky_3.0-%23000000.svg?style=for-the-badge)
 
 ## 🎯 Quick Start
 * Clone the project to your computer from Github using the command:
