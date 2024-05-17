@@ -1,5 +1,5 @@
 from aiogram import Router, F, Bot
-from aiogram.types import Message
+from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.fsm.context import FSMContext
 import os
 
@@ -22,7 +22,7 @@ async def start_handler(message: Message, state: FSMContext):
 
 @router.message(F.text.lower() == "помогите найти!")
 async def help_message_handler(message: Message, state: FSMContext):
-    await message.answer("Пожалуйста, укажите полное имя пропавшего", reply_markup=kb.ReplyKeyboardRemove())
+    await message.answer("Пожалуйста, укажите полное имя пропавшего", reply_markup=ReplyKeyboardRemove())
     await state.set_state(LoadInfoStates.load_name)
 
 

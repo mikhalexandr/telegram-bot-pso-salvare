@@ -1,6 +1,5 @@
 import sqlite3
 
-
 con = sqlite3.connect(r"data\db.sqlite")
 cur = con.cursor()
 
@@ -26,7 +25,8 @@ def create_table():
     """)
     cur.execute("""
         CREATE TABLE IF NOT EXISTS
-        alarmiks (user_id TEXT, cords TEXT, number TEXT, name TEXT, charge TEXT, look TEXT, situation TEXT, photo_id TEXT)
+        alarmiks (user_id TEXT, cords TEXT, number TEXT, name TEXT, charge TEXT, look TEXT, situation TEXT, 
+        photo_id TEXT)
     """)
     cur.execute("""
         CREATE TABLE IF NOT EXISTS
@@ -41,7 +41,8 @@ def get_human(user_id):
 
 def push_lost_info(user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo):
     req = """
-        INSERT INTO lost (user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo)
+        INSERT 
+        INTO lost (user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """
     cur.execute(req, (user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo))
@@ -50,7 +51,8 @@ def push_lost_info(user_id, lost_name_id, born, regions, description, feature, s
 
 def push_checking_info(user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo):
     req = """
-        INSERT INTO checking (user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo)
+        INSERT 
+        INTO checking (user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """
     cur.execute(req, (user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo))

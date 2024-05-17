@@ -1,5 +1,5 @@
 from aiogram import Router, F, Bot
-from aiogram.types import Message
+from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
 import emoji
@@ -32,7 +32,7 @@ async def mobile_handler(message: Message, state: FSMContext):
 async def name_handler(message: Message, state: FSMContext):
     await state.update_data(mobile=message.contact.phone_number)
     await message.answer("Назовите свое имя, фамилию и отчество",
-                         reply_markup=kb.ReplyKeyboardRemove())
+                         reply_markup=ReplyKeyboardRemove())
     await state.set_state(AlarmStates.name)
 
 
@@ -75,7 +75,7 @@ async def note_handler_no_photo(message: Message, state: FSMContext, bot: Bot):
                          "и соблюдайте меры предосторожности!", reply_markup=kb.first_choose_kb())
     await bot.send_message(consts.TUTOR_ID,
                            emoji.emojize(
-                               f"<b>:collision:ВНИМАНИЕ!!! ЧЕЛОВЕК В ОПАСНОСТИ!!!:collision:</b>\nПоследняя геолокация: "
+                               f"<b>:collision:ВНИМАНИЕ!!! ЧЕЛОВЕК В ОПАСНОСТИ!!!:collision:</b>\nПоследняя геолокация:"
                                f"{ll['geo']}\n"
                                f"Номер телефона: {ll['mobile']}\nФИО: {ll['name']}\nУровень заряда аккумулятора: "
                                f"{ll['charge']}\n"
@@ -96,7 +96,7 @@ async def note_handler_photo(message: Message, state: FSMContext, bot: Bot):
                          "и соблюдайте меры предосторожности!", reply_markup=kb.first_choose_kb())
     await bot.send_message(consts.TUTOR_ID,
                            emoji.emojize(
-                               f"<b>:collision:ВНИМАНИЕ!!! ЧЕЛОВЕК В ОПАСНОСТИ!!!:collision:</b>\nПоследняя геолокация: "
+                               f"<b>:collision:ВНИМАНИЕ!!! ЧЕЛОВЕК В ОПАСНОСТИ!!!:collision:</b>\nПоследняя геолокация:"
                                f"{ll['geo']}\n"
                                f"Номер телефона: {ll['mobile']}\nФИО: {ll['name']}\nУровень заряда аккумулятора: "
                                f"{ll['charge']}\n"
