@@ -5,7 +5,7 @@ import os
 
 def create_map(coords):
     req = "https://static-maps.yandex.ru/v1?"
-    params = {"apikey": os.getenv("API_KEY"),
+    params = {"apikey": os.getenv("MAPS_API_KEY"),
               "pt": coords + ",pm2rdm1",
               "z": "12"
               }
