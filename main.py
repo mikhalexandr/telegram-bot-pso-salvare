@@ -17,7 +17,10 @@ async def main():
     dp.include_routers(default_handlers.router, tutor_handlers.router, help_handlers.router,
                        command_handlers.router, alarm_handlers.router, profile_handlers.router, error_handlers.router)
     await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot)
+    try:
+        await dp.start_polling(bot)
+    except asyncio.exceptions.CancelledError:
+        print("The polling cycle was interrupted")
 
 
 if __name__ == "__main__":
