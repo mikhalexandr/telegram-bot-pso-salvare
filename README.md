@@ -1,1 +1,28 @@
-Telegram-bot that helps to find people
+# Telegram-bot PSO SALVARE
+Telegram-bot that helps send missing persons reports, assemble search teams and search for people. It was developed for [the search and rescue team "Salvar"](https://vk.com/wall-29141239_27643)
+
+## 🛠️ Tech Stack
+ㅤ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Aiogram](https://img.shields.io/badge/aiogram-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Pillow](https://img.shields.io/badge/pillow-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
+![Yandex API](https://img.shields.io/badge/yandex_api-FF0000?style=for-the-badge)
+![Kandinsky](https://img.shields.io/badge/kandinsky-%23000000.svg?style=for-the-badge)
+
+## 🎯 Quick Start
+* Clone the project to your computer from Github using the command:
+```
+git clone https://github.com/mikhalexandr/TelegramBot-PSO-SALVARE.git
+```
+
+* Install all required dependencies from `requirements.txt`:
+```
+pip install requirements.txt
+```
+
+* Add this environment variables to the configuration:
+```
+PYTHONUNBUFFERED=1;BOT_TOKEN=your_tg_bot_token;MAPS_API_KEY=your_yandex_static_api_key
+```
+
+* Run `main.py`
