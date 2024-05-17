@@ -5,7 +5,7 @@ import os
 
 
 def create_form(lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo):
-    image = Image.open(r"data\empty-form.jpg")
+    image = Image.open(r"data\form-empty.png")
     drawer = ImageDraw.Draw(image)
     im2 = Image.open(f'photo{photo}.jpg')
     im2_n = im2.resize((290, 390))

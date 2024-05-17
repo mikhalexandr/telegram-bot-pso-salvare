@@ -39,6 +39,11 @@ def get_human(user_id):
     return con.execute(req, (str(user_id),)).fetchone()[0]
 
 
+def check_id(user_id):
+    req = """SELECT EXISTS(SELECT 1 FROM people WHERE user_id = ?) as id_exists"""
+    return cur.execute(req, (str(user_id),)).fetchone()[0]
+
+
 def push_lost_info(user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo):
     req = """
         INSERT 

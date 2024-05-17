@@ -1,5 +1,5 @@
 from aiogram import Router, F, Bot
-from aiogram.types import Message, ReplyKeyboardRemove
+from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 import os
 
@@ -13,16 +13,18 @@ import kb
 router = Router()
 
 
-@router.message(LoadingNameStates.load_name, F.text)
-async def start_handler(message: Message, state: FSMContext):
-    await message.answer(f"Здравствуйте, {message.text}! Выберите действие:", reply_markup=kb.first_choose_kb())
-    db.add_human(message.from_user.id, message.text)
+@router.message(F.text.lower() == "выйти")
+async def help_message_handler(message: Message, state: FSMContext):
+    current_state = await state.get_state()
+    if current_state is None:
+        return
     await state.clear()
+    await message.answer("Выберите действие", reply_markup=kb.first_choose_kb())
 
 
 @router.message(F.text.lower() == "помогите найти!")
 async def help_message_handler(message: Message, state: FSMContext):
-    await message.answer("Пожалуйста, укажите полное имя пропавшего", reply_markup=ReplyKeyboardRemove())
+    await message.answer("Пожалуйста, укажите полное имя пропавшего", reply_markup=kb.exit_help_kb())
     await state.set_state(LoadInfoStates.load_name)
 
 

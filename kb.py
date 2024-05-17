@@ -10,7 +10,7 @@ def first_choose_kb():
 
 
 def yes_or_no_kb():
-    kb = [[KeyboardButton(text="Да"), KeyboardButton(text="Нет")]]
+    kb = [[KeyboardButton(text="Да"), KeyboardButton(text="Нет")], [KeyboardButton(text="Выйти")]]
     keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
     return keyboard
 
@@ -61,5 +61,11 @@ def skip_kb():
 
 def leave_team_kb():
     kb = [[KeyboardButton(text="Назад")], [KeyboardButton(text="Покинуть команду")]]
+    keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
+    return keyboard
+
+
+def exit_help_kb():
+    kb = [[KeyboardButton(text="Выйти")]]
     keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
     return keyboard
