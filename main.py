@@ -1,4 +1,5 @@
 from aiogram import Bot, Dispatcher
+from aiogram.client.default import DefaultBotProperties
 from aiogram.fsm.storage.memory import MemoryStorage
 import asyncio
 import logging
@@ -11,7 +12,7 @@ import db
 
 async def main():
     db.create_table()
-    bot = Bot(token=os.getenv("BOT_TOKEN"), parse_mode="HTML")
+    bot = Bot(token=os.getenv("BOT_TOKEN"), default=DefaultBotProperties(parse_mode="HTML"))
     dp = Dispatcher(storage=MemoryStorage())
     dp.include_routers(default_handlers.router, tutor_handlers.router, help_handlers.router,
                        command_handlers.router, alarm_handlers.router, profile_handlers.router, error_handlers.router)
