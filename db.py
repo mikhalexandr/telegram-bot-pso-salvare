@@ -1,5 +1,6 @@
 import sqlite3
 
+
 con = sqlite3.connect(r"data\db.sqlite")
 cur = con.cursor()
 

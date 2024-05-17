@@ -1,17 +1,17 @@
-import os
-
 from aiogram import Router, F, Bot
-import emoji
 from aiogram.types import Message, CallbackQuery, FSInputFile
 from aiogram.fsm.context import FSMContext
 from aiogram.enums import ParseMode
+import os
+import emoji
+
 from states import TutorStates
-import states
+from filters import TutorFilter
 import consts
 import map
 import db
-from filters import TutorFilter
 import generate_by_request
+
 
 router = Router()
 router.message.filter(TutorFilter())
@@ -55,12 +55,13 @@ async def send_accept_msg(message: Message, state: FSMContext, bot: Bot):
 
 
 @router.callback_query(F.data == "letsalarm")
-async def accept_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
+async def accept_fin(callback: CallbackQuery, bot: Bot):
     user_inf = str(db.get_alarm_id())[2:-3]
     ll = db.get_alarmik(user_inf)
     photo = ll[7]
     db.delete_alarmik(user_inf)
     db.del_alarm_id()
+    p = None
     if not photo:
         generate_by_request.generate(ll[5])
         p = await bot.send_photo(consts.TUTOR_ID, FSInputFile("generated.jpg"), caption="Сгенерированное изображение")
@@ -77,7 +78,8 @@ async def accept_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
             await bot.send_photo(user, photo,
                                  caption="Фотография пострадавшего")
         else:
-            await bot.send_photo(user, p.photo[-1].file_id, caption="Изображение пострадавшего, сгенерированное нейросетью")
+            await bot.send_photo(user, p.photo[-1].file_id,
+                                 caption="Изображение пострадавшего, сгенерированное нейросетью")
     if not photo:
         os.remove("generated.jpg")
     await callback.answer("Рассылка отправлена")

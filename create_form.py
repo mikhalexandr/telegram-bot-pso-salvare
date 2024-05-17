@@ -1,6 +1,6 @@
-import textwrap
 from PIL import Image, ImageDraw, ImageFont
 from aiogram.types import FSInputFile
+import textwrap
 import os
 
 

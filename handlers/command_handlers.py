@@ -2,9 +2,11 @@ from aiogram import Router, F, Bot
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters import Command, CommandObject
 from aiogram.fsm.context import FSMContext
+
+from states import CommandStates
 import db
 import kb
-from states import CommandStates
+
 
 router = Router()
 

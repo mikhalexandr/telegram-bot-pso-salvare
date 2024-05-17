@@ -1,9 +1,11 @@
-from aiogram import Router, F
+from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
-import consts
+
 from states import LoadingNameStates
+import consts
+
 
 router = Router()
 

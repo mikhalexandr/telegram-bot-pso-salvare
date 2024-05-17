@@ -37,4 +37,3 @@ class AlarmStates(StatesGroup):
 
 class CommandStates(StatesGroup):
     choosing = State()
-

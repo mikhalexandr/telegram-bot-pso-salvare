@@ -2,11 +2,13 @@ from aiogram import Router, F, Bot
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 import os
+
+from states import LoadInfoStates, LoadingNameStates
+from create_form import create_form
 import db
 import consts
 import kb
-from states import LoadInfoStates, LoadingNameStates
-from create_form import create_form
+
 
 router = Router()
 
