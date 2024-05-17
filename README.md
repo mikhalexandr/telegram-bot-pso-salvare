@@ -1,6 +1,9 @@
 # Telegram-bot PSO SALVARE
 Telegram-bot that helps send missing persons reports, assemble search teams and search for people. It was developed for [the search and rescue team "Salvar"](https://vk.com/wall-29141239_27643)
 
+> [!NOTE]
+> You can find Telegram-bot [here](t.me/psosalvarebot)
+
 ## 🛠️ Tech Stack
 ㅤ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Aiogram](https://img.shields.io/badge/aiogram-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
