@@ -4,7 +4,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 def first_choose_kb():
     kb = [[KeyboardButton(text="Помогите найти!")], [KeyboardButton(text="Хочу помочь в поисках!")],
-          [KeyboardButton(text="Мне срочно нужна помощь!")]]
+          [KeyboardButton(text="Мне срочно нужна помощь!")], [KeyboardButton(text="Профиль")]]
     keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
     return keyboard
 
@@ -65,7 +65,7 @@ def leave_team_kb():
     return keyboard
 
 
-def exit_help_kb():
+def exit_kb():
     kb = [[KeyboardButton(text="Выйти")]]
     keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
     return keyboard

@@ -36,6 +36,7 @@ async def form_template_handler(message: Message):
                                caption="Шаблон анкеты о пострадавшем")
 
 
-@router.message()
-async def f(message: Message):
-    await message.answer("Нет такого варианта!")
+@router.message(F.text.lower() == "выйти")
+async def help_message_handler(message: Message, state: FSMContext):
+    await state.clear()
+    await message.answer("Выберите действие", reply_markup=kb.first_choose_kb())

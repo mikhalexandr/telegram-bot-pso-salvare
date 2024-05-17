@@ -3,7 +3,7 @@ from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 import os
 
-from states import LoadInfoStates, LoadingNameStates
+from states import LoadInfoStates
 from create_form import create_form
 import db
 import consts
@@ -13,18 +13,9 @@ import kb
 router = Router()
 
 
-@router.message(F.text.lower() == "выйти")
-async def help_message_handler(message: Message, state: FSMContext):
-    current_state = await state.get_state()
-    if current_state is None:
-        return
-    await state.clear()
-    await message.answer("Выберите действие", reply_markup=kb.first_choose_kb())
-
-
 @router.message(F.text.lower() == "помогите найти!")
 async def help_message_handler(message: Message, state: FSMContext):
-    await message.answer("Пожалуйста, укажите полное имя пропавшего", reply_markup=kb.exit_help_kb())
+    await message.answer("Пожалуйста, укажите полное имя пропавшего", reply_markup=kb.exit_kb())
     await state.set_state(LoadInfoStates.load_name)
 
 
