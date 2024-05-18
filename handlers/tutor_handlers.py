@@ -1,10 +1,12 @@
 from aiogram import Router, F, Bot, exceptions
+from aiogram.filters import Command
 from aiogram.types import Message, CallbackQuery, FSInputFile
 from aiogram.fsm.context import FSMContext
 from aiogram.enums import ParseMode
 import os
 import emoji
 
+import kb
 from states import TutorStates
 from filters import TutorFilter
 import consts
@@ -15,6 +17,21 @@ import generate_by_request
 
 router = Router()
 router.message.filter(TutorFilter())
+
+
+@router.message(Command("teams"))
+async def teams_control(msg: Message):
+    for args in db.get_all_lost_info():
+        await msg.answer_photo(args[-1], reply_markup=kb.tutor_teams_control_kb(args[1]))
+
+
+@router.callback_query(F.data.startswith("delteam_"))
+async def delete_team(callback: CallbackQuery, bot: Bot):
+    loser = callback.data.replace("delteam_", "")
+    db.del_team(loser)
+    db.del_lost(loser)
+    await callback.message.delete()
+    await callback.answer(f"Поиск {loser} успешно закрыт!")
 
 
 @router.callback_query(F.data == "letsfind")

@@ -63,3 +63,9 @@ def exit_kb():
     kb = [[KeyboardButton(text="Выйти")]]
     keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
     return keyboard
+
+
+def tutor_teams_control_kb(loser):
+    builder = InlineKeyboardBuilder()
+    builder.row(InlineKeyboardButton(text="Закрыть поиск", callback_data=f"delteam_{loser}"),)
+    return builder.as_markup()

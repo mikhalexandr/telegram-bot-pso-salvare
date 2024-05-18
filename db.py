@@ -74,6 +74,15 @@ def get_lost_info(lost_name_id):
     return result
 
 
+def del_lost(loser):
+    req = """
+            DELETE FROM lost
+            WHERE lost_name_id = ?
+            """
+    cur.execute(req, (loser,))
+    con.commit()
+
+
 def get_all_lost_info():
     req = """
         SELECT user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo 
@@ -119,6 +128,12 @@ def get_all():
     return [i[0] for i in result]
 
 
+def get_teams():
+    req = """SELECT loser FROM teams"""
+    result = cur.execute(req).fetchall()
+    return [i[0] for i in result]
+
+
 def create_team(loser):
     req = """INSERT INTO teams(loser, human) VALUES (?, NULL)"""
     cur.execute(req, (loser,))
@@ -143,10 +158,21 @@ def is_in_team(user_id):
     return res
 
 
+def del_team(loser_id):
+    req = """DELETE FROM teams WHERE loser = ?"""
+    cur.execute(req, (loser_id,))
+    con.commit()
+
+
 def get_teammates(user_id):
     req = """SELECT human FROM teams WHERE loser = (
     SELECT loser FROM teams WHERE human = ?) AND human != ?"""
     return cur.execute(req, (user_id, user_id)).fetchall()
+
+
+def get_teammates_by_loser(loser):
+    req = """SELECT human FROM teams WHERE loser = ?"""
+    return cur.execute(req, (loser,)).fetchall()
 
 
 def add_alarmik(user_id, cords, number, name, charge, look, situation, photo=None):
