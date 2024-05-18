@@ -1,4 +1,4 @@
-from aiogram import Router, F, Bot
+from aiogram import Router, F, Bot, exceptions
 from aiogram.types import Message, CallbackQuery, FSInputFile
 from aiogram.fsm.context import FSMContext
 from aiogram.enums import ParseMode
@@ -62,24 +62,27 @@ async def accept_fin(callback: CallbackQuery, bot: Bot):
     db.delete_alarmik(user_inf)
     db.del_alarm_id()
     p = None
-    if not photo:
-        generate_by_request.generate(ll[5])
-        p = await bot.send_photo(consts.TUTOR_ID, FSInputFile("generated.jpg"), caption="Сгенерированное изображение")
-    for user in db.get_all():
-        await bot.send_message(user, emoji.emojize(
-            f"<b>:collision:ВНИМАНИЕ!!! ЧЕЛОВЕК В ОПАСНОСТИ!!!:collision:</b>\nПоследняя геолокация: "
-            f"{ll[1].split(',')[0]}, {ll[1].split(',')[1]}\n"
-            f"Номер телефона: {ll[2]}\nФИО: {ll[3]}\nУровень заряда аккумулятора: "
-            f"{ll[4]}\n"
-            f"Описание человека: {ll[5]}\nОписание окружающей среды: {ll[6]}"),
-                               parse_mode=ParseMode.HTML)
-        await bot.send_photo(user, map.create_map(ll[1]))
-        if photo:
-            await bot.send_photo(user, photo,
-                                 caption="Фотография пострадавшего")
-        else:
-            await bot.send_photo(user, p.photo[-1].file_id,
-                                 caption="Изображение пострадавшего, сгенерированное нейросетью")
-    if not photo:
-        os.remove("generated.jpg")
-    await callback.answer("Рассылка отправлена")
+    try:
+        if not photo:
+            generate_by_request.generate(ll[5])
+            p = await bot.send_photo(consts.TUTOR_ID, FSInputFile("generated.jpg"), caption="Сгенерированное изображение")
+        for user in db.get_all():
+            await bot.send_message(user, emoji.emojize(
+                f"<b>:collision:ВНИМАНИЕ!!! ЧЕЛОВЕК В ОПАСНОСТИ!!!:collision:</b>\nПоследняя геолокация: "
+                f"{ll[1].split(',')[0]}, {ll[1].split(',')[1]}\n"
+                f"Номер телефона: {ll[2]}\nФИО: {ll[3]}\nУровень заряда аккумулятора: "
+                f"{ll[4]}\n"
+                f"Описание человека: {ll[5]}\nОписание окружающей среды: {ll[6]}"),
+                                   parse_mode=ParseMode.HTML)
+            await bot.send_photo(user, map.create_map(ll[1]))
+            if photo:
+                await bot.send_photo(user, photo,
+                                     caption="Фотография пострадавшего")
+            else:
+                await bot.send_photo(user, p.photo[-1].file_id,
+                                     caption="Изображение пострадавшего, сгенерированное нейросетью")
+        if not photo:
+            os.remove("generated.jpg")
+        await callback.answer("Рассылка отправлена")
+    except exceptions.TelegramBadRequest:
+        print("OK")

@@ -39,7 +39,7 @@ async def name_handler(message: Message, state: FSMContext):
 @router.message(AlarmStates.name, F.text)
 async def charge_handler(message: Message, state: FSMContext):
     await state.update_data(name=message.text)
-    await message.answer("Пожалуйста, впиишите уровень заряда вашего устройства")
+    await message.answer("Пожалуйста, впишите уровень заряда вашего устройства")
     await state.set_state(AlarmStates.charge)
 
 

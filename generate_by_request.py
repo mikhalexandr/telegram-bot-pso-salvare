@@ -56,8 +56,8 @@ class Text2ImageAPI:
 
 
 def gen(prom, dirr="res"):
-    api = Text2ImageAPI('https://api-key.fusionbrain.ai/', '522FFD1209513A985CC8AE346D45C833',
-                        'E700EFED47B01D3DD7D2AA7CB301B37B')
+    api = Text2ImageAPI('https://api-key.fusionbrain.ai/',  str(os.getenv('KANDINSKY_API_KEY')),
+                        str(os.getenv('KANDINSKY_SECRET_KEY')))
     model_id = api.get_model()
     uuid = api.generate(prom, model_id)
     images = api.check_generation(uuid)
