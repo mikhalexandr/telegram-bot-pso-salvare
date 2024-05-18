@@ -63,6 +63,7 @@ async def send_reject_msg(message: Message, state: FSMContext, bot: Bot):
 
 @router.message(TutorStates.descript_accept, F.text)
 async def send_accept_msg(message: Message, state: FSMContext, bot: Bot):
+    db.update_help_count((await state.get_data())["user_id"])
     await bot.send_message((await state.get_data())["user_id"], f"Ваш поиск принят!")
     ll = await state.get_data()
     db.create_team(ll["loser_name"])
@@ -77,7 +78,6 @@ async def accept_fin(callback: CallbackQuery, bot: Bot):
     ll = db.get_alarmik(user_inf)
     photo = ll[7]
     db.delete_alarmik(user_inf)
-    # db.del_alarm_id()
     p = None
     try:
         if not photo:

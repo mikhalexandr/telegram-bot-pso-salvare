@@ -17,7 +17,8 @@ def create_table():
         """)
     cur.execute("""
                 CREATE TABLE IF NOT EXISTS
-                people (user_id TEXT, name TEXT)
+                people (user_id TEXT, name TEXT, help_count INT DEFAULT 0, comm_count INT DEFAULT 0, 
+                alarm_count INT DEFAULT 0)
             """)
     cur.execute("""
         CREATE TABLE IF NOT EXISTS
@@ -221,4 +222,40 @@ def update_person_name(user_id, name):
         WHERE user_id = ?
     """
     cur.execute(req, (name, user_id))
+    con.commit()
+
+
+def get_person_info(user_id):
+    req = f"""
+        SELECT help_count, comm_count, alarm_count FROM people
+        WHERE user_id = ?
+    """
+    res = list(cur.execute(req, (user_id,)).fetchone())
+    return res
+
+
+def update_help_count(user_id):
+    req = f"""
+        UPDATE people SET help_count = help_count + 1
+        WHERE user_id = ?
+    """
+    cur.execute(req, (user_id,))
+    con.commit()
+
+
+def update_comm_count(user_id):
+    req = f"""
+        UPDATE people SET comm_count = comm_count + 1
+        WHERE user_id = ?
+    """
+    cur.execute(req, (user_id,))
+    con.commit()
+
+
+def update_alarm_count(user_id):
+    req = f"""
+        UPDATE people SET alarm_count = alarm_count + 1
+        WHERE user_id = ?
+    """
+    cur.execute(req, (user_id,))
     con.commit()

@@ -92,6 +92,7 @@ async def note_handler_photo(message: Message, state: FSMContext, bot: Bot):
     ll = await state.get_data()
     db.add_alarmik(message.from_user.id, *[ll[key] for key in ll], message.photo[-1].file_id)
     db.add_alarm_id(message.from_user.id)
+    db.update_alarm_count(message.from_user.id)
     await message.answer("Информация передана, скоро прибудет помощь! "
                          "Сохраняйте спокойствие, не уходите далеко от вашей нынешней геолокации "
                          "и соблюдайте меры предосторожности!", reply_markup=kb.first_choose_kb())

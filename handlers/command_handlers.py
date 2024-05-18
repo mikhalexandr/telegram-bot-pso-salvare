@@ -15,9 +15,9 @@ router = Router()
 @router.message(F.text.lower() == emoji.emojize("🔎 хочу помочь в поисках!"))
 async def help_message_handler(message: Message, state: FSMContext):
     if db.is_in_team(message.from_user.id):
-        await message.answer("Выберите, кому вы хотите и можете помочь", reply_markup=kb.leave_team_kb())
+        await message.answer("Выберите, кому вы хотите и можете помочь:", reply_markup=kb.leave_team_kb())
     else:
-        await message.answer("Выберите, кому вы хотите и можете помочь", reply_markup=kb.exit_kb())
+        await message.answer("Выберите, кому вы хотите и можете помочь:", reply_markup=kb.exit_kb())
     for args in db.get_all_lost_info():
         await message.answer_photo(args[-1], reply_markup=kb.join_command_kb(args[1]))
     await state.set_state(CommandStates.choosing)
@@ -43,6 +43,7 @@ async def send_teammates(message: Message, command: CommandObject, bot: Bot):
 @router.callback_query(CommandStates.choosing)
 async def join_team(callback: CallbackQuery, state: FSMContext):
     id_ = (await state.get_data())["id"]
+    db.update_comm_count(id_)
     db.del_team_member(id_)
     db.add_team_member(id_, callback.data)
     await callback.answer("Вы успешно присоединились к команде!")
