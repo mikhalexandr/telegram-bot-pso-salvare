@@ -1,6 +1,3 @@
-from dotenv import load_dotenv
-load_dotenv()
-
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
 import asyncio

@@ -26,7 +26,7 @@ async def teams_control(msg: Message):
 
 
 @router.callback_query(F.data.startswith("delteam_"))
-async def delete_team(callback: CallbackQuery, bot: Bot):
+async def delete_team(callback: CallbackQuery):
     loser = callback.data.replace("delteam_", "")
     db.del_team(loser)
     db.del_lost(loser)
@@ -82,7 +82,8 @@ async def accept_fin(callback: CallbackQuery, bot: Bot):
     try:
         if not photo:
             generate_by_request.generate(ll[5])
-            p = await bot.send_photo(consts.TUTOR_ID, FSInputFile("generated.jpg"), caption="Сгенерированное изображение")
+            p = await bot.send_photo(consts.TUTOR_ID, FSInputFile("generated.jpg"),
+                                     caption="Сгенерированное изображение")
         for user in db.get_all():
             await bot.send_message(user, emoji.emojize(
                 f"<b>:collision:ВНИМАНИЕ!!! ЧЕЛОВЕК В ОПАСНОСТИ!!!:collision:</b>\nПоследняя геолокация: "
@@ -106,8 +107,7 @@ async def accept_fin(callback: CallbackQuery, bot: Bot):
 
 
 @router.callback_query(F.data == "alarmreject")
-async def accept_fin(callback: CallbackQuery, bot: Bot):
+async def accept_fin(callback: CallbackQuery):
     user_inf = str(db.get_alarm_id())[2:-3]
     db.delete_alarmik(user_inf)
-    # db.del_alarm_id()
     await callback.answer("Запрос успешно отклонен!")

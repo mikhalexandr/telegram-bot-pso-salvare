@@ -213,11 +213,3 @@ def get_alarm_id():
         SELECT user_id FROM alarm_users
     """
     return cur.execute(req).fetchone()
-
-
-# def del_alarm_id():
-#     req = f"""
-#         DELETE FROM alarm_users
-#     """
-#     cur.execute(req)
-#     con.commit()
