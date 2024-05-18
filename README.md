@@ -23,9 +23,14 @@ git clone https://github.com/mikhalexandr/TelegramBot-PSO-SALVARE.git
 pip install requirements.txt
 ```
 
-* Add this environment variables to the configuration:
-```
-PYTHONUNBUFFERED=1;BOT_TOKEN=your_tg_bot_token;MAPS_API_KEY=your_yandex_static_api_key;TUTOR_ID=your_tg_id_for_admin_panel;KANDINSKY_API_KEY=your_kandinsky_api_key;KANDINSKY_SECRET_KEY=your_kandinsky_secret_key
+* create `.env` in the project folder and paste these lines there:
+```env
+PYTHONUNBUFFERED=1;
+BOT_TOKEN=your_tg_bot_token;
+MAPS_API_KEY=your_yandex_static_api_key;
+TUTOR_ID=your_tg_id_for_admin_panel;
+KANDINSKY_API_KEY=your_kandinsky_api_key;
+KANDINSKY_SECRET_KEY=your_kandinsky_secret_key
 ```
 
 * Run `main.py`
