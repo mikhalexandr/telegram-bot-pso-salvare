@@ -189,9 +189,9 @@ def get_alarm_id():
     return cur.execute(req).fetchone()
 
 
-def del_alarm_id():
-    req = f"""
-        DELETE FROM alarm_users
-    """
-    cur.execute(req)
-    con.commit()
+# def del_alarm_id():
+#     req = f"""
+#         DELETE FROM alarm_users
+#     """
+#     cur.execute(req)
+#     con.commit()

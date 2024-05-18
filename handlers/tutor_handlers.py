@@ -60,7 +60,7 @@ async def accept_fin(callback: CallbackQuery, bot: Bot):
     ll = db.get_alarmik(user_inf)
     photo = ll[7]
     db.delete_alarmik(user_inf)
-    db.del_alarm_id()
+    # db.del_alarm_id()
     p = None
     try:
         if not photo:
@@ -86,3 +86,11 @@ async def accept_fin(callback: CallbackQuery, bot: Bot):
         await callback.answer("Рассылка отправлена")
     except exceptions.TelegramBadRequest:
         print("OK")
+
+
+@router.callback_query(F.data == "alarmreject")
+async def accept_fin(callback: CallbackQuery, bot: Bot):
+    user_inf = str(db.get_alarm_id())[2:-3]
+    db.delete_alarmik(user_inf)
+    # db.del_alarm_id()
+    await callback.answer("Запрос успешно отклонен!")
