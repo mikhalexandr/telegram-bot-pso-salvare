@@ -28,12 +28,6 @@ def join_command_kb(lost_name):
     return builder.as_markup()
 
 
-def back_kb():
-    kb = [[KeyboardButton(text="Назад")]]
-    keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
-    return keyboard
-
-
 def geo_kb():
     kb = [[KeyboardButton(text="Отправить геопозицию", request_location=True)], [KeyboardButton(text="Выйти")]]
     keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
@@ -60,7 +54,7 @@ def skip_kb():
 
 
 def leave_team_kb():
-    kb = [[KeyboardButton(text="Назад")], [KeyboardButton(text="Покинуть команду")]]
+    kb = [[KeyboardButton(text="Покинуть команду")], [KeyboardButton(text="Выйти")]]
     keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
     return keyboard
 
