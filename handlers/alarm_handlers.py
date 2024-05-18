@@ -32,7 +32,7 @@ async def mobile_handler(message: Message, state: FSMContext):
 async def name_handler(message: Message, state: FSMContext):
     await state.update_data(mobile=message.contact.phone_number)
     await message.answer("Назовите свое имя, фамилию и отчество",
-                         reply_markup=ReplyKeyboardRemove())
+                         reply_markup=kb.exit_kb())
     await state.set_state(AlarmStates.name)
 
 

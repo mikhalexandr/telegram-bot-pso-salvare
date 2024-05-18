@@ -30,13 +30,13 @@ async def start_handler(message: Message, state: FSMContext):
     await state.clear()
 
 
+@router.message(F.text.lower() == "выйти")
+async def help_message_handler(message: Message, state: FSMContext):
+    await state.clear()
+    await message.answer("Выберите действие:", reply_markup=kb.first_choose_kb())
+
+
 @router.message(Command("form_template"))
 async def form_template_handler(message: Message):
     await message.answer_photo(photo=FSInputFile(path="data/form-template.png"),
                                caption="Шаблон анкеты о пострадавшем")
-
-
-@router.message(F.text.lower() == "выйти")
-async def help_message_handler(message: Message, state: FSMContext):
-    await state.clear()
-    await message.answer("Выберите действие", reply_markup=kb.first_choose_kb())

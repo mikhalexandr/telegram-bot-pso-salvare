@@ -35,13 +35,13 @@ def back_kb():
 
 
 def geo_kb():
-    kb = [[KeyboardButton(text="Отправить геопозицию", request_location=True)]]
+    kb = [[KeyboardButton(text="Отправить геопозицию", request_location=True)], [KeyboardButton(text="Выйти")]]
     keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
     return keyboard
 
 
 def contact_kb():
-    kb = [[KeyboardButton(text="Отправить контакт", request_contact=True)]]
+    kb = [[KeyboardButton(text="Отправить контакт", request_contact=True)], [KeyboardButton(text="Выйти")]]
     keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
     return keyboard
 
@@ -54,7 +54,7 @@ def inline_alarming_kb():
 
 
 def skip_kb():
-    kb = [[KeyboardButton(text="Пропустить")]]
+    kb = [[KeyboardButton(text="Пропустить")], [KeyboardButton(text="Выйти")]]
     keyboard = ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
     return keyboard
 
