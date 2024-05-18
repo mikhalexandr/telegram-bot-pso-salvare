@@ -3,6 +3,8 @@ from aiogram.fsm.state import State, StatesGroup
 
 class LoadingNameStates(StatesGroup):
     load_name = State()
+    change_name = State()
+    change_ready = State()
 
 
 class LoadInfoStates(StatesGroup):

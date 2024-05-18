@@ -2,6 +2,7 @@ from aiogram import Router, F
 from aiogram.types import Message, FSInputFile
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
+import emoji
 
 from states import LoadingNameStates
 import consts
@@ -30,7 +31,7 @@ async def start_handler(message: Message, state: FSMContext):
     await state.clear()
 
 
-@router.message(F.text.lower() == "выйти")
+@router.message(F.text.lower() == emoji.emojize("◀ выйти"))
 async def help_message_handler(message: Message, state: FSMContext):
     await state.clear()
     await message.answer("Выберите действие:", reply_markup=kb.first_choose_kb())

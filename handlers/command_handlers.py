@@ -2,6 +2,7 @@ from aiogram import Router, F, Bot
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters import Command, CommandObject
 from aiogram.fsm.context import FSMContext
+import emoji
 
 from states import CommandStates
 import db
@@ -11,7 +12,7 @@ import kb
 router = Router()
 
 
-@router.message(F.text.lower() == "хочу помочь в поисках!")
+@router.message(F.text.lower() == emoji.emojize("🔎 хочу помочь в поисках!"))
 async def help_message_handler(message: Message, state: FSMContext):
     if db.is_in_team(message.from_user.id):
         await message.answer("Выберите, кому вы хотите и можете помочь", reply_markup=kb.leave_team_kb())

@@ -1,6 +1,7 @@
 from aiogram import Router, F, Bot
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
+import emoji
 import os
 
 from states import LoadInfoStates
@@ -13,7 +14,7 @@ import kb
 router = Router()
 
 
-@router.message(F.text.lower() == "помогите найти!")
+@router.message(F.text.lower() == emoji.emojize("🙏 помогите найти!"))
 async def help_message_handler(message: Message, state: FSMContext):
     await message.answer("Пожалуйста, укажите полное имя пропавшего", reply_markup=kb.exit_kb())
     await state.set_state(LoadInfoStates.load_name)
@@ -88,7 +89,7 @@ async def check_form_handler(message: Message, state: FSMContext):
     await state.set_state(LoadInfoStates.confirm)
 
 
-@router.message(LoadInfoStates.confirm, F.text.lower() == "да")
+@router.message(LoadInfoStates.confirm, F.text.lower() == emoji.emojize("✅ да"))
 async def okay_handler(message: Message, state: FSMContext, bot: Bot):
     await message.answer("Отлично! Ваш запрос будет рассмотрен в ближайшее время!", reply_markup=kb.first_choose_kb())
     ll = await state.get_data()
@@ -97,18 +98,18 @@ async def okay_handler(message: Message, state: FSMContext, bot: Bot):
     await state.clear()
 
 
-@router.message(LoadInfoStates.confirm, F.text.lower() == "нет")
+@router.message(LoadInfoStates.confirm, F.text.lower() == emoji.emojize("❌ нет"))
 async def repeat_handler(message: Message, state: FSMContext):
     await message.answer("Вы хотите заново заполнить анкету?", reply_markup=kb.yes_or_no_kb())
     await state.set_state(LoadInfoStates.confirm_restart)
 
 
-@router.message(LoadInfoStates.confirm_restart, F.text.lower() == "нет")
+@router.message(LoadInfoStates.confirm_restart, F.text.lower() == emoji.emojize("❌ нет"))
 async def no_handler(message: Message, state: FSMContext):
-    await message.answer("Выберите действие", reply_markup=kb.first_choose_kb())
+    await message.answer("Выберите действие:", reply_markup=kb.first_choose_kb())
     await state.clear()
 
 
-@router.message(LoadInfoStates.confirm_restart, F.text.lower() == "да")
+@router.message(LoadInfoStates.confirm_restart, F.text.lower() == emoji.emojize("✅ да"))
 async def yes_handler(message: Message, state: FSMContext):
     await help_message_handler(message, state)

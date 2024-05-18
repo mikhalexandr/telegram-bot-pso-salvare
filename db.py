@@ -213,3 +213,12 @@ def get_alarm_id():
         SELECT user_id FROM alarm_users
     """
     return cur.execute(req).fetchone()
+
+
+def update_person_name(user_id, name):
+    req = f"""
+        UPDATE people SET name = ?
+        WHERE user_id = ?
+    """
+    cur.execute(req, (name, user_id))
+    con.commit()
