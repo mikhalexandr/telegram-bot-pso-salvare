@@ -8,7 +8,6 @@ from states import CommandStates
 import db
 import kb
 
-
 router = Router()
 
 
@@ -46,4 +45,6 @@ async def join_team(callback: CallbackQuery, state: FSMContext):
     db.update_comm_count(id_)
     db.del_team_member(id_)
     db.add_team_member(id_, callback.data)
+    await callback.message.answer("Теперь вам доступна команда [/chat] для общения с товарищами по поиску!",
+                                  reply_markup=kb.leave_team_kb())
     await callback.answer("Вы успешно присоединились к команде!")
