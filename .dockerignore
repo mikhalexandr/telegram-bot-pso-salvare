@@ -1,4 +1,7 @@
+.github
 .gitignore
+
+.pylintrc
 
 docker-compose.yml
 Dockerfile
