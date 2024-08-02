@@ -15,7 +15,7 @@ class Text2ImageAPI:
         }
 
     def get_model(self):
-        response = requests.get(self.URL + 'key/api/v1/models', headers=self.AUTH_HEADERS)
+        response = requests.get(self.URL + 'key/api/v1/models', headers=self.AUTH_HEADERS, timeout=300)
         data = response.json()
         print(data)
         return data[0]['id']
@@ -34,13 +34,15 @@ class Text2ImageAPI:
             'model_id': (None, model),
             'params': (None, json.dumps(params), 'application/json')
         }
-        response = requests.post(self.URL + 'key/api/v1/text2image/run', headers=self.AUTH_HEADERS, files=data)
+        response = requests.post(self.URL + 'key/api/v1/text2image/run', headers=self.AUTH_HEADERS, files=data,
+                                 timeout=300)
         data = response.json()
         return data['uuid']
 
     def check_generation(self, request_id, attempts=10, delay=10):
         while attempts > 0:
-            response = requests.get(self.URL + 'key/api/v1/text2image/status/' + request_id, headers=self.AUTH_HEADERS)
+            response = requests.get(self.URL + 'key/api/v1/text2image/status/' + request_id, headers=self.AUTH_HEADERS,
+                                    timeout=300)
             data = response.json()
             if data['status'] == 'DONE':
                 return data['images']

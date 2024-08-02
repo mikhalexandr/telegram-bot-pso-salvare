@@ -7,4 +7,6 @@ disable=line-too-long,
         too-few-public-methods,
         too-many-locals,
         too-many-arguments,
-        invalid-name
+        invalid-name,
+        broad-exception-caught,
+        unspecified-encoding

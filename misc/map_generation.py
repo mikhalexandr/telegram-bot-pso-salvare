@@ -11,7 +11,7 @@ def create_map(coords):
         "pt": coords + ",pm2rdm1",
         "z": "12"
     }
-    response = requests.get(req, params=params)
+    response = requests.get(req, params=params, timeout=300)
     if not response:
         return False
     return BufferedInputFile(response.content, filename=f"map{coords}.png")

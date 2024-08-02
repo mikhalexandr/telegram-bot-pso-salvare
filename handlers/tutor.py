@@ -63,7 +63,7 @@ async def send_lost_reject_msg(message: Message, state: FSMContext, bot: Bot):
 @router.message(TutorStates.descript_accept, F.text)
 async def send_lost_accept_msg(message: Message, state: FSMContext, bot: Bot):
     Users.update_lost_count((await state.get_data())["user_id"])
-    await bot.send_message((await state.get_data())["user_id"], f"Ваш поиск принят!")
+    await bot.send_message((await state.get_data())["user_id"], "Ваш поиск принят!")
     ll = await state.get_data()
     Teams.create_team(ll["loser_name"])
     for user in Users.get_users():
