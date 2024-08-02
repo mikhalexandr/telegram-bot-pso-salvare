@@ -27,5 +27,4 @@ jobs:
           
       - name: Analysing the code with pylint
         run: |
-          pylint $(git ls-files '*.py') 
-          --disable=missing-module-docstring, missing-class-docstring, missing-function-docstring, line-too-long .
+          pylint --rcfile=.pylintrc $(git ls-files '*.py') 
