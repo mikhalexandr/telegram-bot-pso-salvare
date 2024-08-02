@@ -6,7 +6,7 @@ class AlarmIds:
     def add_alarm_id(user_id):
         req = """
             INSERT INTO alarm_ids (user_id) 
-            VALUES (?)
+            VALUES (%s)
         """
         cur.execute(req, (user_id,))
         con.commit()
@@ -17,4 +17,5 @@ class AlarmIds:
             SELECT user_id 
             FROM alarm_ids
         """
-        return cur.execute(req).fetchone()
+        cur.execute(req)
+        return cur.fetchone()

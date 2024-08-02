@@ -6,19 +6,19 @@ class Users:
     def add_user(user_id, name):
         req1 = """
             SELECT * 
-            FROM people 
-            WHERE user_id = ?
+            FROM users 
+            WHERE user_id = %s
         """
         req2 = """
-            UPDATE people
-            SET name = ? 
-            WHERE user_id = ?
+            UPDATE users
+            SET name = %s 
+            WHERE user_id = %s
         """
         req3 = """
-            INSERT INTO people (user_id, name) 
-            VALUES (?, ?)
+            INSERT INTO users (user_id, name) 
+            VALUES (%s, %s)
         """
-        if cur.execute(req1, (user_id,)).fetchone():
+        if cur.execute(req1, (user_id,)):
             cur.execute(req2, (name, user_id))
         else:
             cur.execute(req3, (user_id, name))
@@ -28,17 +28,18 @@ class Users:
     def get_user(user_id):
         req = """
             SELECT name 
-            FROM people 
-            WHERE user_id = ?
+            FROM users 
+            WHERE user_id = %s
         """
-        return con.execute(req, (str(user_id),)).fetchone()[0]
+        cur.execute(req, (user_id,))
+        return cur.fetchone()[0]
 
     @staticmethod
     def update_user_name(user_id, name):
         req = """
-            UPDATE people 
-            SET name = ?
-            WHERE user_id = ?
+            UPDATE users 
+            SET name = %s
+            WHERE user_id = %s
         """
         cur.execute(req, (name, user_id))
         con.commit()
@@ -47,29 +48,32 @@ class Users:
     def check_user_id(user_id):
         req = """
             SELECT EXISTS(
-                SELECT 1 
-                FROM users 
-                WHERE user_id = ?
-            ) as id_exists
+                SELECT 1
+                FROM users
+                WHERE user_id = %s
+            )
         """
-        return cur.execute(req, (str(user_id),)).fetchone()[0]
+        cur.execute(req, (user_id,))
+        result = cur.fetchone()
+        return result[0] if result else None
 
     @staticmethod
     def get_user_info(user_id):
         req = """
             SELECT lost_count, team_count, alarm_count 
             FROM users
-            WHERE user_id = ?
+            WHERE user_id = %s
         """
-        res = list(cur.execute(req, (user_id,)).fetchone())
-        return res
+        cur.execute(req, (user_id,))
+        result = list(cur.fetchone())
+        return result
 
     @staticmethod
     def update_lost_count(user_id):
         req = """
             UPDATE users 
             SET lost_count = lost_count + 1
-            WHERE user_id = ?
+            WHERE user_id = %s
         """
         cur.execute(req, (user_id,))
         con.commit()
@@ -79,7 +83,7 @@ class Users:
         req = """
             UPDATE users
             SET team_count = team_count + 1
-            WHERE user_id = ?
+            WHERE user_id = %s
         """
         cur.execute(req, (user_id,))
         con.commit()
@@ -89,7 +93,7 @@ class Users:
         req = """
             UPDATE users 
             SET alarm_count = alarm_count + 1
-            WHERE user_id = ?
+            WHERE user_id = %s
         """
         cur.execute(req, (user_id,))
         con.commit()
@@ -100,5 +104,6 @@ class Users:
             SELECT user_id 
             FROM users
         """
-        result = cur.execute(req).fetchall()
+        cur.execute(req)
+        result = cur.fetchall()
         return [i[0] for i in result]

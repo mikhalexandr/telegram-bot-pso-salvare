@@ -10,7 +10,7 @@ load_dotenv()
 @dataclass
 class TelegramConfig:
     BOT_TOKEN: str = os.getenv("BOT_TOKEN")
-    TUTOR_ID: int = os.getenv("TUTOR_ID")
+    TUTOR_ID: int = int(os.getenv("TUTOR_ID"))
 
 
 @dataclass

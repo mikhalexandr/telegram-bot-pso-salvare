@@ -33,9 +33,9 @@ async def delete_team(callback: CallbackQuery):
     await callback.answer(f"Поиск {loser} успешно закрыт!")
 
 
-@router.callback_query(F.data == "letsfind")
+@router.callback_query(F.data.startswith("letsfind:"))
 async def accept_lost_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
-    info = Checking.get_checking()
+    info = Checking.get_checking(callback.data.split(":")[1])
     await state.set_state(TutorStates.descript_accept)
     await state.update_data(user_id=info[0], photo=info[-1], loser_name=info[1])
     Checking.delete_checking(info[1])
@@ -44,9 +44,9 @@ async def accept_lost_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
     await callback.answer()
 
 
-@router.callback_query(F.data == "reject")
+@router.callback_query(F.data.startswith("reject:"))
 async def reject_lost_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
-    info = Checking.get_checking()
+    info = Checking.get_checking(callback.data.split(":")[1])
     await state.set_state(TutorStates.descript_reject)
     await state.update_data(user_id=info[0])
     Checking.delete_checking(info[1])

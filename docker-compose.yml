@@ -1,18 +1,20 @@
 name: "pso-salvare-bot"
 
 services:
-  bot:
-    container_name: "telegram-bot"
-    build:
-      context: .
-      dockerfile: Dockerfile
-    restart: unless-stopped
-    env_file:
-      - config/.env
-    ports:
-      - "5252:5252"
-    networks:
-      - backend
+#  bot:
+#    container_name: telegram-bot
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    restart: unless-stopped
+#    env_file:
+#      - config/.env
+#    ports:
+#      - "5252:5252"
+#    depends_on:
+#      - database
+#    networks:
+#      - backend
 
   database:
     container_name: database
@@ -20,6 +22,8 @@ services:
     restart: unless-stopped
     env_file:
       - config/.env.database
+    ports:
+      - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:

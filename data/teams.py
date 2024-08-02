@@ -6,7 +6,7 @@ class Teams:
     def create_team(lost):
         req = """
             INSERT INTO teams(lost, user_id) 
-            VALUES (?, NULL)
+            VALUES (%s, NULL)
         """
         cur.execute(req, (lost,))
         con.commit()
@@ -16,17 +16,17 @@ class Teams:
         req = """
             SELECT * 
             FROM teams 
-            WHERE user_id = ?
+            WHERE user_id = %s
         """
-        res = cur.execute(req, (user_id,)).fetchone()
-        return res
+        cur.execute(req, (user_id,))
+        return cur.fetchone()
 
     @staticmethod
     def delete_team(lost_id):
         req = """
             DELETE 
             FROM teams 
-            WHERE lost = ?
+            WHERE lost = %s
         """
         cur.execute(req, (lost_id,))
         con.commit()
@@ -35,7 +35,7 @@ class Teams:
     def add_teammate(mate, lost):
         req2 = """
             INSERT INTO teams(lost, user_id) 
-            VALUES (?, ?) 
+            VALUES (%s, %s) 
             ON CONFLICT (user_id) DO NOTHING
         """
         cur.execute(req2, (lost, mate))
@@ -46,7 +46,7 @@ class Teams:
         req = """
             DELETE 
             FROM teams 
-            WHERE user_id = ?
+            WHERE user_id = %s
         """
         cur.execute(req, (user_id,))
         con.commit()
@@ -57,7 +57,8 @@ class Teams:
             SELECT lost 
             FROM teams
         """
-        result = cur.execute(req).fetchall()
+        cur.execute(req)
+        result = cur.fetchall()
         return [i[0] for i in result]
 
     @staticmethod
@@ -68,16 +69,18 @@ class Teams:
             WHERE lost = (
                 SELECT lost 
                 FROM teams 
-                WHERE user_id = ?
-            ) AND user_id != ?
+                WHERE user_id = %s
+            ) AND user_id != %s
         """
-        return cur.execute(req, (user_id, user_id)).fetchall()
+        cur.execute(req, (user_id, user_id))
+        return cur.fetchall()
 
     @staticmethod
     def get_teammates_by_lost(lost):
         req = """
             SELECT user_id 
             FROM teams 
-            WHERE lost = ?
+            WHERE lost = %s
         """
-        return cur.execute(req, (lost,)).fetchall()
+        cur.execute(req, (lost,))
+        return cur.fetchall()

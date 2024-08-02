@@ -7,7 +7,7 @@ class Lost:
         req = """
             INSERT 
             INTO lost (user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         cur.execute(req, (user_id, lost_name_id,
                           born, regions, description, feature, spec_feature, clothes, items, photo))
@@ -18,17 +18,17 @@ class Lost:
         req = """
             SELECT user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo 
             FROM lost
-            WHERE lost_name_id = ?
+            WHERE lost_name_id = %s
         """
-        result = cur.execute(req, (lost_name_id,)).fetchone()
-        return result
+        cur.execute(req, (lost_name_id,))
+        return cur.fetchone()
 
     @staticmethod
     def delete_lost(lost_id):
         req = """
             DELETE 
             FROM lost
-            WHERE lost_name_id = ?
+            WHERE lost_name_id = %s
         """
         cur.execute(req, (lost_id,))
         con.commit()
@@ -39,5 +39,5 @@ class Lost:
             SELECT user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo 
             FROM lost
         """
-        result = cur.execute(req).fetchall()
-        return result
+        cur.execute(req)
+        return cur.fetchall()

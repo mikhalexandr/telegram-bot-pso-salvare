@@ -14,11 +14,11 @@ class TutorKeyboard:
         return builder.as_markup()
 
     @staticmethod
-    def inline_finding_kb():
+    def inline_finding_kb(req_id):
         builder = InlineKeyboardBuilder()
         builder.row(
-            InlineKeyboardButton(text=emoji.emojize("✅ В поиск!"), callback_data="letsfind"),
-            InlineKeyboardButton(text=emoji.emojize("❌ Отклонить"), callback_data="reject")
+            InlineKeyboardButton(text=emoji.emojize("✅ В поиск!"), callback_data=f"letsfind:{req_id}"),
+            InlineKeyboardButton(text=emoji.emojize("❌ Отклонить"), callback_data=f"reject:{req_id}")
         )
         return builder.as_markup()
 

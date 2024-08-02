@@ -96,7 +96,7 @@ async def okay_handler(message: Message, state: FSMContext, bot: Bot):
                          reply_markup=SelectionKeyboard.select_action_kb())
     ll = await state.get_data()
     Checking.add_checking(message.from_user.id, *[ll[key] for key in ll])
-    await bot.send_photo(TelegramConfig.TUTOR_ID, ll["photo"], reply_markup=TutorKeyboard.inline_finding_kb())
+    await bot.send_photo(TelegramConfig.TUTOR_ID, ll["photo"], reply_markup=TutorKeyboard.inline_finding_kb(ll["name"]))
     await state.clear()
 
 
