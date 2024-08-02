@@ -9,5 +9,5 @@ disable=line-too-long,
         too-many-arguments,
         invalid-name,
         broad-exception-caught,
-        unspecified-encoding
+        unspecified-encoding,
         inconsistent-return-statements
