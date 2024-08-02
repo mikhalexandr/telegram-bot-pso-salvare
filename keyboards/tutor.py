@@ -23,9 +23,9 @@ class TutorKeyboard:
         return builder.as_markup()
 
     @staticmethod
-    def tutor_teams_control_kb(loser):
+    def tutor_teams_control_kb(lost):
         builder = InlineKeyboardBuilder()
         builder.row(
-            InlineKeyboardButton(text=emoji.emojize("🚫 Закрыть поиск"), callback_data=f"delteam_{loser}")
+            InlineKeyboardButton(text=emoji.emojize("🚫 Закрыть поиск"), callback_data=f"delteam_{lost}")
         )
         return builder.as_markup()

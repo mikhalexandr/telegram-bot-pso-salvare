@@ -17,7 +17,7 @@ class Checking:
 
     @staticmethod
     def get_checking(req_id):
-        req = f"""
+        req = """
             SELECT *
             FROM checking
             WHERE lost_name_id = %s

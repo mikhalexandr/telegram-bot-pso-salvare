@@ -114,4 +114,5 @@ async def no_handler(message: Message, state: FSMContext):
 
 @router.message(LostStates.confirm_restart, F.text.lower() == emoji.emojize("✅ да"))
 async def yes_handler(message: Message, state: FSMContext):
+    await state.clear()
     await help_message_handler(message, state)
