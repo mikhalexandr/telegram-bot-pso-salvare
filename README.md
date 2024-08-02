@@ -1,4 +1,9 @@
 # Telegram-bot PSO SALVARE
+
+![License](https://img.shields.io/github/license/dmhd6219/sdamgia-solver)
+![Python Version](https://img.shields.io/badge/python-3.6%2B-blue)
+![Version](https://img.shields.io/badge/version-1.0-green)
+
 Telegram-bot for [the search and rescue team "Salvar"](https://vk.com/wall-29141239_27643) that helps send missing persons reports, assemble search teams and search for people. There is also an admin panel, which is implemented using a third-party program Adminer, allowing organizers to control the data and processes occurring inside the bot
 
 > [!NOTE]
@@ -45,4 +50,6 @@ docker-compose up
 ```
 
 ## 🏆 Awards
-  -
+  - [Absolute winner in the regional track of the All-Russian competition of scientific and technological projects "Big Challenges. Smolensk-2024" in the nomination "Smart City and Security"](https://vk.com/wall-189705382_4434)
+  - [I degree diploma in the city School Science Week "First Steps in Science"](https://vk.com/wall-189705382_4415)
+  - [Prize-winning place in the hackathon Game of detective](https://vk.com/itcube.smolensk?z=photo-189705382_457267230%2Fwall-189705382_4142)
