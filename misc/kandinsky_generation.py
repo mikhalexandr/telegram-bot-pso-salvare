@@ -1,17 +1,12 @@
 import requests
-
 import json
 import time
 import base64
 
-from random import randint as r
-from random import choice as ch
-
-import os
+from config import KandinskyConfig
 
 
 class Text2ImageAPI:
-
     def __init__(self, url, api_key, secret_key):
         self.URL = url
         self.AUTH_HEADERS = {
@@ -35,7 +30,6 @@ class Text2ImageAPI:
                 "query": f"{prompt}"
             }
         }
-
         data = {
             'model_id': (None, model),
             'params': (None, json.dumps(params), 'application/json')
@@ -50,40 +44,27 @@ class Text2ImageAPI:
             data = response.json()
             if data['status'] == 'DONE':
                 return data['images']
-
             attempts -= 1
             time.sleep(delay)
 
 
-def gen(prom, dirr="res"):
-    api = Text2ImageAPI('https://api-key.fusionbrain.ai/',  str(os.getenv('KANDINSKY_API_KEY')),
-                        str(os.getenv('KANDINSKY_SECRET_KEY')))
+def generate_image(prom):
+    api = Text2ImageAPI('https://api-key.fusionbrain.ai/',  str(KandinskyConfig.KANDINSKY_API_KEY),
+                        str(KandinskyConfig.KANDINSKY_SECRET_KEY))
     model_id = api.get_model()
     uuid = api.generate(prom, model_id)
     images = api.check_generation(uuid)
-
-    # Здесь image_base64 - это строка с данными изображения в формате base64
     image_base64 = images[0]
-
-    # Декодируем строку base64 в бинарные данные
     image_data = base64.b64decode(image_base64)
-
-    # Открываем файл для записи бинарных данных изображения
     try:
-        with open("generated.jpg", "wb") as file:
+        with open("assets/temporary/generated.jpg", "wb") as file:
             file.write(image_data)
-    except:
-        with open("generated.jpg", "w+") as file:
+    except Exception as e:
+        print(e)
+        with open("assets/temporary/generated.jpg", "w+") as file:
             file.write(image_data)
 
 
-#
-
-def generate(zapros):
-    # try:
-    #     os.mkdir(os.getcwd().replace("\\", "/") + f'/' + zapros.replace("\n", " ").split(".")[0])
-    # except FileExistsError:
-    #     print('exist')
-
-    gen(zapros.replace("\n", " "), zapros.replace("\n", " ").split(".")[0])
+def request_image(req):
+    generate_image(req.replace("\n", " "))
     print("завершено")

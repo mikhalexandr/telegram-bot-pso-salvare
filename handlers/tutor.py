@@ -3,16 +3,15 @@ from aiogram.filters import Command
 from aiogram.types import Message, CallbackQuery, FSInputFile
 from aiogram.fsm.context import FSMContext
 from aiogram.enums import ParseMode
-import os
 import emoji
+import os
 
-import kb
+from keyboards import TutorKeyboard
+from data import Lost, Teams, Checking, Users, AlarmIds, Alarm
+from config import TelegramConfig
 from states import TutorStates
 from filters import TutorFilter
-import consts
-import map
-import db
-import generate_by_request
+from misc import request_image, create_map
 
 
 router = Router()
@@ -21,37 +20,37 @@ router.message.filter(TutorFilter())
 
 @router.message(Command("teams"))
 async def teams_control(msg: Message):
-    for args in db.get_all_lost_info():
-        await msg.answer_photo(args[-1], reply_markup=kb.tutor_teams_control_kb(args[1]))
+    for args in Lost.get_all_lost():
+        await msg.answer_photo(args[-1], reply_markup=TutorKeyboard.tutor_teams_control_kb(args[1]))
 
 
 @router.callback_query(F.data.startswith("delteam_"))
 async def delete_team(callback: CallbackQuery):
     loser = callback.data.replace("delteam_", "")
-    db.del_team(loser)
-    db.del_lost(loser)
+    Teams.delete_team(loser)
+    Lost.delete_lost(loser)
     await callback.message.delete()
     await callback.answer(f"Поиск {loser} успешно закрыт!")
 
 
 @router.callback_query(F.data == "letsfind")
 async def accept_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
-    info = db.get_checking_info()
+    info = Checking.get_checking()
     await state.set_state(TutorStates.descript_accept)
     await state.update_data(user_id=info[0], photo=info[-1], loser_name=info[1])
-    db.delete_checking(info[1])
-    db.push_lost_info(*info)
-    await bot.send_message(consts.TUTOR_ID, "Введите полную информацию про поиск:")
+    Checking.delete_checking(info[1])
+    Lost.add_lost(*info)
+    await bot.send_message(TelegramConfig.TUTOR_ID, "Введите полную информацию про поиск:")
     await callback.answer()
 
 
 @router.callback_query(F.data == "reject")
 async def reject_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
-    info = db.get_checking_info()
+    info = Checking.get_checking()
     await state.set_state(TutorStates.descript_reject)
     await state.update_data(user_id=info[0])
-    db.delete_checking(info[1])
-    await bot.send_message(consts.TUTOR_ID, "Укажите причину отклонения запроса:")
+    Checking.delete_checking(info[1])
+    await bot.send_message(TelegramConfig.TUTOR_ID, "Укажите причину отклонения запроса:")
     await callback.answer()
 
 
@@ -63,28 +62,28 @@ async def send_reject_msg(message: Message, state: FSMContext, bot: Bot):
 
 @router.message(TutorStates.descript_accept, F.text)
 async def send_accept_msg(message: Message, state: FSMContext, bot: Bot):
-    db.update_help_count((await state.get_data())["user_id"])
+    Users.update_lost_count((await state.get_data())["user_id"])
     await bot.send_message((await state.get_data())["user_id"], f"Ваш поиск принят!")
     ll = await state.get_data()
-    db.create_team(ll["loser_name"])
-    for user in db.get_all():
+    Teams.create_team(ll["loser_name"])
+    for user in Users.get_users():
         await bot.send_photo(user, ll["photo"], caption=message.text)
     await state.clear()
 
 
 @router.callback_query(F.data == "letsalarm")
 async def accept_fin(callback: CallbackQuery, bot: Bot):
-    user_inf = str(db.get_alarm_id())[2:-3]
-    ll = db.get_alarmik(user_inf)
+    user_inf = str(AlarmIds.get_alarm_id())[2:-3]
+    ll = Alarm.get_alarm(user_inf)
     photo = ll[7]
-    db.delete_alarmik(user_inf)
+    Alarm.delete_alarm(user_inf)
     p = None
     try:
         if not photo:
-            generate_by_request.generate(ll[5])
-            p = await bot.send_photo(consts.TUTOR_ID, FSInputFile("generated.jpg"),
+            request_image(ll[5])
+            p = await bot.send_photo(TelegramConfig.TUTOR_ID, FSInputFile("generated.jpg"),
                                      caption="Сгенерированное изображение")
-        for user in db.get_all():
+        for user in Users.get_users():
             await bot.send_message(user, emoji.emojize(
                 f"<b>:collision:ВНИМАНИЕ!!! ЧЕЛОВЕК В ОПАСНОСТИ!!!:collision:</b>\nПоследняя геолокация: "
                 f"{ll[1].split(',')[0]}, {ll[1].split(',')[1]}\n"
@@ -92,7 +91,7 @@ async def accept_fin(callback: CallbackQuery, bot: Bot):
                 f"{ll[4]}\n"
                 f"Описание человека: {ll[5]}\nОписание окружающей среды: {ll[6]}"),
                                    parse_mode=ParseMode.HTML)
-            await bot.send_photo(user, map.create_map(ll[1]))
+            await bot.send_photo(user, create_map(ll[1]))
             if photo:
                 await bot.send_photo(user, photo,
                                      caption="Фотография пострадавшего")
@@ -108,6 +107,6 @@ async def accept_fin(callback: CallbackQuery, bot: Bot):
 
 @router.callback_query(F.data == "alarmreject")
 async def accept_fin(callback: CallbackQuery):
-    user_inf = str(db.get_alarm_id())[2:-3]
-    db.delete_alarmik(user_inf)
+    user_inf = str(AlarmIds.get_alarm_id())[2:-3]
+    Alarm.delete_alarm(user_inf)
     await callback.answer("Запрос успешно отклонен!")

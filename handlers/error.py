@@ -6,5 +6,5 @@ router = Router()
 
 
 @router.message()
-async def f(message: Message):
+async def unknown(message: Message):
     await message.answer("Нет такого варианта!")

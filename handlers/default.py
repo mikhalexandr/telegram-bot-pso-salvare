@@ -4,10 +4,10 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 import emoji
 
-from states import LoadingNameStates
-import consts
-import db
-import kb
+from keyboards import SelectionKeyboard
+from data import Users
+from config import TelegramTexts
+from states import ProfileStates
 
 
 router = Router()
@@ -15,27 +15,28 @@ router = Router()
 
 @router.message(Command("start"))
 async def start_handler(message: Message, state: FSMContext):
-    if db.check_id(message.from_user.id) == 1:
-        await message.answer(emoji.emojize(f"👋 Здравствуйте, {db.get_human(message.from_user.id)}! Выберите действие:"),
-                             reply_markup=kb.first_choose_kb())
+    if Users.check_user_id(message.from_user.id) == 1:
+        await message.answer(emoji.emojize(f"👋 Здравствуйте, {Users.get_user(message.from_user.id)}! "
+                                           f"Выберите действие:"),
+                             reply_markup=SelectionKeyboard.select_action_kb())
         await state.clear()
     else:
-        await message.answer(consts.START_MESSAGE)
-        await state.set_state(LoadingNameStates.load_name)
+        await message.answer(TelegramTexts.START_MESSAGE)
+        await state.set_state(ProfileStates.load_name)
 
 
-@router.message(LoadingNameStates.load_name, F.text)
+@router.message(ProfileStates.load_name, F.text)
 async def start_handler(message: Message, state: FSMContext):
     await message.answer(emoji.emojize(f"👋 Здравствуйте, {message.text}! Выберите действие:"),
-                         reply_markup=kb.first_choose_kb())
-    db.add_human(message.from_user.id, message.text)
+                         reply_markup=SelectionKeyboard.select_action_kb())
+    Users.add_user(message.from_user.id, message.text)
     await state.clear()
 
 
 @router.message(F.text.lower() == emoji.emojize("◀ выйти"))
 async def help_message_handler(message: Message, state: FSMContext):
     await state.clear()
-    await message.answer("Выберите действие:", reply_markup=kb.first_choose_kb())
+    await message.answer("Выберите действие:", reply_markup=SelectionKeyboard.select_action_kb())
 
 
 @router.message(Command("form_template"))

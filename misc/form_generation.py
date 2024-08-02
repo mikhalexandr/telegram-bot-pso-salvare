@@ -5,15 +5,14 @@ import os
 
 
 def create_form(lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo):
-    image = Image.open(r"data\form-empty.png")
+    image = Image.open(r"assets/form/empty.png")
     drawer = ImageDraw.Draw(image)
-    im2 = Image.open(f'photo{photo}.jpg')
+    im2 = Image.open(f'assets/temporary/photo{photo}.jpg')
     im2_n = im2.resize((290, 390))
-
     image.paste(im2_n, (75, 80))
-
     font = ImageFont.truetype("calibri.ttf", 50)
     name = lost_name_id.split(" ")
+
     if len(name) != 3:
         drawer.text((418, 60), f"{lost_name_id}", font=font, fill='black')
     else:
@@ -56,7 +55,7 @@ def create_form(lost_name_id, born, regions, description, feature, spec_feature,
         drawer.text((418, y), line, font=font, fill="black")
         y += 25
 
-    image.save(f"image{photo}.jpg")
-    res = FSInputFile(f"image{photo}.jpg")
-    os.system(f"del photo{photo}.jpg")
+    image.save(f"assets/temporary/image{photo}.jpg")
+    res = FSInputFile(f"assets/temporary/image{photo}.jpg")
+    os.system(f"del assets/temporary/photo{photo}.jpg")
     return res

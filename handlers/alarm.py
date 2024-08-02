@@ -4,11 +4,11 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
 import emoji
 
+from keyboards import AlarmKeyboard, ExitKeyboard, SelectionKeyboard, TutorKeyboard
+from data import Alarm, AlarmIds, Users
+from config import TelegramConfig
 from states import AlarmStates
-import map
-import consts
-import db
-import kb
+from misc import create_map
 
 
 router = Router()
@@ -16,7 +16,8 @@ router = Router()
 
 @router.message(F.text.lower() == emoji.emojize("🆘 мне срочно нужна помощь!"))
 async def geo_handler(message: Message, state: FSMContext):
-    await message.answer("Сохраняйте спокойствие! Первым делом пришлите нам свою геопозицию!", reply_markup=kb.geo_kb())
+    await message.answer("Сохраняйте спокойствие! Первым делом пришлите нам свою геопозицию!",
+                         reply_markup=AlarmKeyboard.geo_kb())
     await state.set_state(AlarmStates.geodata)
 
 
@@ -24,7 +25,7 @@ async def geo_handler(message: Message, state: FSMContext):
 async def mobile_handler(message: Message, state: FSMContext):
     await state.update_data(geo=str(message.location.longitude) + "," + str(message.location.latitude))
     await message.answer("Отлично, мы получили геопозицию. Теперь пришлите Ваш номер телефона!",
-                         reply_markup=kb.contact_kb())
+                         reply_markup=AlarmKeyboard.contact_kb())
     await state.set_state(AlarmStates.mobile)
 
 
@@ -32,7 +33,7 @@ async def mobile_handler(message: Message, state: FSMContext):
 async def name_handler(message: Message, state: FSMContext):
     await state.update_data(mobile=message.contact.phone_number)
     await message.answer("Назовите свое имя, фамилию и отчество",
-                         reply_markup=kb.exit_kb())
+                         reply_markup=ExitKeyboard.exit_kb())
     await state.set_state(AlarmStates.name)
 
 
@@ -62,49 +63,49 @@ async def photo_handler(message: Message, state: FSMContext):
     await state.update_data(situation=message.text)
     await message.answer(f"Пришлите свою фотографию или нажмите {emoji.emojize('⏩ Пропустить')},"
                          f" если у вас нет такой возможности",
-                         reply_markup=kb.skip_kb())
+                         reply_markup=AlarmKeyboard.skip_kb())
     await state.set_state(AlarmStates.photo)
 
 
 @router.message(AlarmStates.photo, F.text == emoji.emojize("⏩ Пропустить"))
 async def note_handler_no_photo(message: Message, state: FSMContext, bot: Bot):
     ll = await state.get_data()
-    db.add_alarmik(message.from_user.id, *[ll[key] for key in ll])
-    db.add_alarm_id(message.from_user.id)
+    Alarm.add_alarm(message.from_user.id, *[ll[key] for key in ll])
+    AlarmIds.add_alarm_id(message.from_user.id)
     await message.answer("Информация передана, скоро прибудет помощь! "
                          "Сохраняйте спокойствие, не уходите далеко от вашей нынешней геолокации "
-                         "и соблюдайте меры предосторожности!", reply_markup=kb.first_choose_kb())
-    await bot.send_message(consts.TUTOR_ID,
+                         "и соблюдайте меры предосторожности!", reply_markup=SelectionKeyboard.select_action_kb())
+    await bot.send_message(TelegramConfig.TUTOR_ID,
                            emoji.emojize(
                                f"<b>:collision:ВНИМАНИЕ!!! ЧЕЛОВЕК В ОПАСНОСТИ!!!:collision:</b>\nПоследняя геолокация:"
                                f"{ll['geo']}\n"
                                f"Номер телефона: {ll['mobile']}\nФИО: {ll['name']}\nУровень заряда аккумулятора: "
                                f"{ll['charge']}\n"
                                f"Описание человека: {ll['look']}\nОписание окружающей среды: {ll['situation']}"),
-                           parse_mode=ParseMode.HTML, reply_markup=kb.inline_alarming_kb()
+                           parse_mode=ParseMode.HTML, reply_markup=TutorKeyboard.inline_alarming_kb()
                            )
-    await bot.send_photo(consts.TUTOR_ID, map.create_map(ll["geo"]))
+    await bot.send_photo(TelegramConfig.TUTOR_ID, create_map(ll["geo"]))
     await state.clear()
 
 
 @router.message(AlarmStates.photo, F.photo)
 async def note_handler_photo(message: Message, state: FSMContext, bot: Bot):
     ll = await state.get_data()
-    db.add_alarmik(message.from_user.id, *[ll[key] for key in ll], message.photo[-1].file_id)
-    db.add_alarm_id(message.from_user.id)
-    db.update_alarm_count(message.from_user.id)
+    Alarm.add_alarm(message.from_user.id, *[ll[key] for key in ll], message.photo[-1].file_id)
+    AlarmIds.add_alarm_id(message.from_user.id)
+    Users.update_alarm_count(message.from_user.id)
     await message.answer("Информация передана, скоро прибудет помощь! "
                          "Сохраняйте спокойствие, не уходите далеко от вашей нынешней геолокации "
-                         "и соблюдайте меры предосторожности!", reply_markup=kb.first_choose_kb())
-    await bot.send_message(consts.TUTOR_ID,
+                         "и соблюдайте меры предосторожности!", reply_markup=SelectionKeyboard.select_action_kb())
+    await bot.send_message(TelegramConfig.TUTOR_ID,
                            emoji.emojize(
                                f"<b>:collision:ВНИМАНИЕ!!! ЧЕЛОВЕК В ОПАСНОСТИ!!!:collision:</b>\nПоследняя геолокация:"
                                f"{ll['geo']}\n"
                                f"Номер телефона: {ll['mobile']}\nФИО: {ll['name']}\nУровень заряда аккумулятора: "
                                f"{ll['charge']}\n"
                                f"Описание человека: {ll['look']}\nОписание окружающей среды: {ll['situation']}"),
-                           parse_mode=ParseMode.HTML, reply_markup=kb.inline_alarming_kb()
+                           parse_mode=ParseMode.HTML, reply_markup=TutorKeyboard.inline_alarming_kb()
                            )
-    await bot.send_photo(consts.TUTOR_ID, map.create_map(ll["geo"]))
-    await bot.send_photo(consts.TUTOR_ID, message.photo[-1].file_id)
+    await bot.send_photo(TelegramConfig.TUTOR_ID, create_map(ll["geo"]))
+    await bot.send_photo(TelegramConfig.TUTOR_ID, message.photo[-1].file_id)
     await state.clear()

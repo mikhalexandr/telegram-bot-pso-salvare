@@ -1,4 +1,4 @@
 .idea
-venv
-data/db.sqlite
-.env
+.venv
+
+config/*.env*
