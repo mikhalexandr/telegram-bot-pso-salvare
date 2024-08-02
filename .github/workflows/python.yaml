@@ -25,5 +25,6 @@ jobs:
           pip install -r requirements.txt
           pip install pylint_runner
           
-      - name: Pylint
-        run: pylint **/*.py
+      - name: Analysing the code with pylint
+        run: |
+          pylint $(git ls-files '*.py')
