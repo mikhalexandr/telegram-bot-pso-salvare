@@ -26,7 +26,7 @@ async def start_handler(message: Message, state: FSMContext):
 
 
 @router.message(ProfileStates.load_name, F.text)
-async def start_handler(message: Message, state: FSMContext):
+async def name_greeting_handler(message: Message, state: FSMContext):
     await message.answer(emoji.emojize(f"👋 Здравствуйте, {message.text}! Выберите действие:"),
                          reply_markup=SelectionKeyboard.select_action_kb())
     Users.add_user(message.from_user.id, message.text)

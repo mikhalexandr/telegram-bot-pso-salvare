@@ -25,7 +25,7 @@ async def help_message_handler(message: Message, state: FSMContext):
 
 
 @router.message(TeamStates.choosing, F.text.lower() == "покинуть команду")
-async def help_message_handler(message: Message):
+async def leave_team(message: Message):
     Teams.delete_teammate(message.from_user.id)
     await message.answer("Успешно!", reply_markup=ExitKeyboard.exit_kb())
 

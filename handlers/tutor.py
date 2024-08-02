@@ -34,7 +34,7 @@ async def delete_team(callback: CallbackQuery):
 
 
 @router.callback_query(F.data == "letsfind")
-async def accept_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
+async def accept_lost_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
     info = Checking.get_checking()
     await state.set_state(TutorStates.descript_accept)
     await state.update_data(user_id=info[0], photo=info[-1], loser_name=info[1])
@@ -45,7 +45,7 @@ async def accept_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
 
 
 @router.callback_query(F.data == "reject")
-async def reject_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
+async def reject_lost_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
     info = Checking.get_checking()
     await state.set_state(TutorStates.descript_reject)
     await state.update_data(user_id=info[0])
@@ -55,13 +55,13 @@ async def reject_fin(callback: CallbackQuery, state: FSMContext, bot: Bot):
 
 
 @router.message(TutorStates.descript_reject, F.text)
-async def send_reject_msg(message: Message, state: FSMContext, bot: Bot):
+async def send_lost_reject_msg(message: Message, state: FSMContext, bot: Bot):
     await bot.send_message((await state.get_data())["user_id"], f"Ваш поиск отклонен!\n{message.text}")
     await state.clear()
 
 
 @router.message(TutorStates.descript_accept, F.text)
-async def send_accept_msg(message: Message, state: FSMContext, bot: Bot):
+async def send_lost_accept_msg(message: Message, state: FSMContext, bot: Bot):
     Users.update_lost_count((await state.get_data())["user_id"])
     await bot.send_message((await state.get_data())["user_id"], f"Ваш поиск принят!")
     ll = await state.get_data()
@@ -72,7 +72,7 @@ async def send_accept_msg(message: Message, state: FSMContext, bot: Bot):
 
 
 @router.callback_query(F.data == "letsalarm")
-async def accept_fin(callback: CallbackQuery, bot: Bot):
+async def accept_alarm_fin(callback: CallbackQuery, bot: Bot):
     user_inf = str(AlarmIds.get_alarm_id())[2:-3]
     ll = Alarm.get_alarm(user_inf)
     photo = ll[7]
@@ -106,7 +106,7 @@ async def accept_fin(callback: CallbackQuery, bot: Bot):
 
 
 @router.callback_query(F.data == "alarmreject")
-async def accept_fin(callback: CallbackQuery):
+async def reject_alarm_fin(callback: CallbackQuery):
     user_inf = str(AlarmIds.get_alarm_id())[2:-3]
     Alarm.delete_alarm(user_inf)
     await callback.answer("Запрос успешно отклонен!")
