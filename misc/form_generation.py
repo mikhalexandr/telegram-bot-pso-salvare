@@ -56,6 +56,6 @@ def create_form(lost_name_id, born, regions, description, feature, spec_feature,
         y += 25
 
     image.save(f"assets/temporary/image{photo}.jpg")
-    res = FSInputFile(f"assets/temporary/image{photo}.jpg")
+    result = FSInputFile(f"assets/temporary/image{photo}.jpg")
     os.remove(f"assets/temporary/image{photo}.jpg")
-    return res
+    return result
