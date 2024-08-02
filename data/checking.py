@@ -1,4 +1,4 @@
-from config import DatabaseConfig
+from config import con, cur
 
 
 class Checking:
@@ -11,9 +11,9 @@ class Checking:
             photo)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
-        DatabaseConfig.cur.execute(req, (user_id, lost_name_id, born, regions, description, feature, spec_feature,
-                                         clothes, items, photo))
-        DatabaseConfig.con.commit()
+        cur.execute(req, (user_id, lost_name_id, born, regions, description, feature, spec_feature,
+                          clothes, items, photo))
+        con.commit()
 
     @staticmethod
     def get_checking():
@@ -21,7 +21,7 @@ class Checking:
             SELECT user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo 
             FROM checking
         """
-        result = DatabaseConfig.cur.execute(req, ).fetchone()
+        result = cur.execute(req, ).fetchone()
         return result
 
     @staticmethod
@@ -31,5 +31,5 @@ class Checking:
             FROM checking
             WHERE lost_name_id = ?
         """
-        DatabaseConfig.cur.execute(req, (lost_name_id,))
-        DatabaseConfig.con.commit()
+        cur.execute(req, (lost_name_id,))
+        con.commit()

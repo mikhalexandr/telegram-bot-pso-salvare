@@ -1,8 +1,8 @@
+import os
 from aiogram import Router, F, Bot
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 import emoji
-import os
 
 from keyboards import LostKeyboard, ExitKeyboard, SelectionKeyboard, TutorKeyboard
 from data import Checking

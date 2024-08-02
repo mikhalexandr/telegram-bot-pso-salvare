@@ -1,10 +1,10 @@
+import os
 from aiogram import Router, F, Bot, exceptions
 from aiogram.filters import Command
 from aiogram.types import Message, CallbackQuery, FSInputFile
 from aiogram.fsm.context import FSMContext
 from aiogram.enums import ParseMode
 import emoji
-import os
 
 from keyboards import TutorKeyboard
 from data import Lost, Teams, Checking, Users, AlarmIds, Alarm

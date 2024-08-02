@@ -1,4 +1,4 @@
-from config import DatabaseConfig
+from config import con, cur
 
 
 class Alarm:
@@ -8,8 +8,8 @@ class Alarm:
                 INSERT INTO alarm (user_id, cords, number, name, charge, look, situation, photo_id)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """
-        DatabaseConfig.cur.execute(req, (user_id, cords, number, name, charge, look, situation, photo))
-        DatabaseConfig.con.commit()
+        cur.execute(req, (user_id, cords, number, name, charge, look, situation, photo))
+        con.commit()
 
     @staticmethod
     def get_alarm(user_id):
@@ -18,7 +18,7 @@ class Alarm:
             FROM alarm 
             WHERE user_id = ?
         """
-        return DatabaseConfig.cur.execute(req, (user_id,)).fetchone()
+        return cur.execute(req, (user_id,)).fetchone()
 
     @staticmethod
     def delete_alarm(user_id):
@@ -27,5 +27,5 @@ class Alarm:
             FROM alarm
             WHERE user_id = ?
         """
-        DatabaseConfig.cur.execute(req, (user_id,))
-        DatabaseConfig.con.commit()
+        cur.execute(req, (user_id,))
+        con.commit()

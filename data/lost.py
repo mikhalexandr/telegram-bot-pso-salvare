@@ -1,4 +1,4 @@
-from config import DatabaseConfig
+from config import con, cur
 
 
 class Lost:
@@ -9,9 +9,9 @@ class Lost:
             INTO lost (user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
-        DatabaseConfig.cur.execute(req, (user_id, lost_name_id,
-                                         born, regions, description, feature, spec_feature, clothes, items, photo))
-        DatabaseConfig.con.commit()
+        cur.execute(req, (user_id, lost_name_id,
+                          born, regions, description, feature, spec_feature, clothes, items, photo))
+        con.commit()
 
     @staticmethod
     def get_lost(lost_name_id):
@@ -20,7 +20,7 @@ class Lost:
             FROM lost
             WHERE lost_name_id = ?
         """
-        result = DatabaseConfig.cur.execute(req, (lost_name_id,)).fetchone()
+        result = cur.execute(req, (lost_name_id,)).fetchone()
         return result
 
     @staticmethod
@@ -30,8 +30,8 @@ class Lost:
             FROM lost
             WHERE lost_name_id = ?
         """
-        DatabaseConfig.cur.execute(req, (lost_id,))
-        DatabaseConfig.con.commit()
+        cur.execute(req, (lost_id,))
+        con.commit()
 
     @staticmethod
     def get_all_lost():
@@ -39,5 +39,5 @@ class Lost:
             SELECT user_id, lost_name_id, born, regions, description, feature, spec_feature, clothes, items, photo 
             FROM lost
         """
-        result = DatabaseConfig.cur.execute(req).fetchall()
+        result = cur.execute(req).fetchall()
         return result

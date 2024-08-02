@@ -1,4 +1,4 @@
-from config import DatabaseConfig
+from config import con, cur
 
 
 class AlarmIds:
@@ -8,8 +8,8 @@ class AlarmIds:
             INSERT INTO alarm_ids (user_id) 
             VALUES (?)
         """
-        DatabaseConfig.cur.execute(req, (user_id,))
-        DatabaseConfig.con.commit()
+        cur.execute(req, (user_id,))
+        con.commit()
 
     @staticmethod
     def get_alarm_id():
@@ -17,4 +17,4 @@ class AlarmIds:
             SELECT user_id 
             FROM alarm_ids
         """
-        return DatabaseConfig.cur.execute(req).fetchone()
+        return cur.execute(req).fetchone()

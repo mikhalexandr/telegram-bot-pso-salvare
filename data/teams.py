@@ -1,4 +1,4 @@
-from config import DatabaseConfig
+from config import con, cur
 
 
 class Teams:
@@ -8,8 +8,8 @@ class Teams:
             INSERT INTO teams(lost, user_id) 
             VALUES (?, NULL)
         """
-        DatabaseConfig.cur.execute(req, (lost,))
-        DatabaseConfig.con.commit()
+        cur.execute(req, (lost,))
+        con.commit()
 
     @staticmethod
     def is_in_team(user_id):
@@ -18,7 +18,7 @@ class Teams:
             FROM teams 
             WHERE user_id = ?
         """
-        res = DatabaseConfig.cur.execute(req, (user_id,)).fetchone()
+        res = cur.execute(req, (user_id,)).fetchone()
         return res
 
     @staticmethod
@@ -28,8 +28,8 @@ class Teams:
             FROM teams 
             WHERE lost = ?
         """
-        DatabaseConfig.cur.execute(req, (lost_id,))
-        DatabaseConfig.con.commit()
+        cur.execute(req, (lost_id,))
+        con.commit()
 
     @staticmethod
     def add_teammate(mate, lost):
@@ -38,8 +38,8 @@ class Teams:
             VALUES (?, ?) 
             ON CONFLICT (user_id) DO NOTHING
         """
-        DatabaseConfig.cur.execute(req2, (lost, mate))
-        DatabaseConfig.con.commit()
+        cur.execute(req2, (lost, mate))
+        con.commit()
 
     @staticmethod
     def delete_teammate(user_id):
@@ -48,8 +48,8 @@ class Teams:
             FROM teams 
             WHERE user_id = ?
         """
-        DatabaseConfig.cur.execute(req, (user_id,))
-        DatabaseConfig.con.commit()
+        cur.execute(req, (user_id,))
+        con.commit()
 
     @staticmethod
     def get_teams():
@@ -57,7 +57,7 @@ class Teams:
             SELECT lost 
             FROM teams
         """
-        result = DatabaseConfig.cur.execute(req).fetchall()
+        result = cur.execute(req).fetchall()
         return [i[0] for i in result]
 
     @staticmethod
@@ -71,7 +71,7 @@ class Teams:
                 WHERE user_id = ?
             ) AND user_id != ?
         """
-        return DatabaseConfig.cur.execute(req, (user_id, user_id)).fetchall()
+        return cur.execute(req, (user_id, user_id)).fetchall()
 
     @staticmethod
     def get_teammates_by_lost(lost):
@@ -80,4 +80,4 @@ class Teams:
             FROM teams 
             WHERE lost = ?
         """
-        return DatabaseConfig.cur.execute(req, (lost,)).fetchall()
+        return cur.execute(req, (lost,)).fetchall()

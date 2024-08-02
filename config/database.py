@@ -1,7 +1,5 @@
-import psycopg2
 import os
+import psycopg2
 
-
-class DatabaseConfig:
-    con = psycopg2.connect(os.getenv("DATABASE_URL"))
-    cur = con.cursor()
+con = psycopg2.connect(os.getenv("DATABASE_URL"))
+cur = con.cursor()

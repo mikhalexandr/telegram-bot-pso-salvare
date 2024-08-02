@@ -1,7 +1,7 @@
-import requests
 import json
 import time
 import base64
+import requests
 
 from config import KandinskyConfig
 
