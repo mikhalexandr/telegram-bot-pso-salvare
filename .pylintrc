@@ -10,3 +10,4 @@ disable=line-too-long,
         invalid-name,
         broad-exception-caught,
         unspecified-encoding
+        inconsistent-return-statements
