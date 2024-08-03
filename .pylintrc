@@ -8,6 +8,6 @@ disable=line-too-long,
         too-many-locals,
         too-many-arguments,
         invalid-name,
-        broad-exception-caught,
         unspecified-encoding,
+        broad-exception-caught,
         inconsistent-return-statements
