@@ -5,7 +5,7 @@
 ![Version](https://img.shields.io/badge/version-1.0-green)
 
 Telegram bot for [the search and rescue team "Salvar"](https://vk.com/wall-29141239_27643), which consists of:
-  - a user part, where people can send messages about missing persons, join search groups and send emergency requests for help, and receive newsletters about various incidents
+  - a user part, where people can send messages about missing persons, join search groups, send emergency requests for help, and receive newsletters about various incidents
   -  an admin panel, where the organizer can moderate incoming bot-generated questionnaires about missing persons, requests for help and commands  
 
 There is also a panel for moderating the database, implemented using a third-party program [Adminer](https://www.adminer.org/).
