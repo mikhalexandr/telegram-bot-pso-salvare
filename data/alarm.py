@@ -12,21 +12,21 @@ class Alarm:
         con.commit()
 
     @staticmethod
-    def get_alarm(user_id):
+    def get_alarm(user_geo, user_name):
         req = """
             SELECT * 
             FROM alarm 
-            WHERE user_id = %s
+            WHERE cords = %s AND name = %s
         """
-        cur.execute(req, (user_id,))
+        cur.execute(req, (user_geo, user_name,))
         return cur.fetchone()
 
     @staticmethod
-    def delete_alarm(user_id):
+    def delete_alarm(user_geo, user_name):
         req = """
             DELETE 
             FROM alarm
-            WHERE user_id = %s
+            WHERE cords = %s AND name = %s
         """
-        cur.execute(req, (user_id,))
+        cur.execute(req, (user_geo, user_name,))
         con.commit()

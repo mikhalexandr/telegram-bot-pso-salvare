@@ -7,7 +7,7 @@ from aiogram.enums import ParseMode
 import emoji
 
 from keyboards import TutorKeyboard
-from data import Lost, Teams, Checking, Users, AlarmIds, Alarm
+from data import Lost, Teams, Checking, Users, Alarm
 from config import TelegramConfig
 from states import TutorStates
 from filters import TutorFilter
@@ -71,17 +71,17 @@ async def send_lost_accept_msg(message: Message, state: FSMContext, bot: Bot):
     await state.clear()
 
 
-@router.callback_query(F.data == "letsalarm")
+@router.callback_query(F.data.startswith("letsalarm:"))
 async def accept_alarm_fin(callback: CallbackQuery, bot: Bot):
-    user_inf = str(AlarmIds.get_alarm_id())[2:-3]
-    ll = Alarm.get_alarm(user_inf)
-    photo = ll[7]
-    Alarm.delete_alarm(user_inf)
+    user_geo = callback.data.split(":")[1]
+    user_name = callback.data.split(":")[2]
+    ll = Alarm.get_alarm(user_geo, user_name)
+    photo = ll[-1]
     p = None
     try:
-        if not photo:
+        if photo == "no_photo":
             request_image(ll[5])
-            p = await bot.send_photo(TelegramConfig.TUTOR_ID, FSInputFile("generated.jpg"),
+            p = await bot.send_photo(TelegramConfig.TUTOR_ID, FSInputFile("assets/temporary/generated.jpg"),
                                      caption="Сгенерированное изображение")
         for user in Users.get_users():
             await bot.send_message(user, emoji.emojize(
@@ -92,21 +92,22 @@ async def accept_alarm_fin(callback: CallbackQuery, bot: Bot):
                 f"Описание человека: {ll[5]}\nОписание окружающей среды: {ll[6]}"),
                                    parse_mode=ParseMode.HTML)
             await bot.send_photo(user, create_map(ll[1]))
-            if photo:
+            if photo != "no_photo":
                 await bot.send_photo(user, photo,
                                      caption="Фотография пострадавшего")
             else:
                 await bot.send_photo(user, p.photo[-1].file_id,
                                      caption="Изображение пострадавшего, сгенерированное нейросетью")
-        if not photo:
-            os.remove("generated.jpg")
+        if photo == "no_photo":
+            os.remove("assets/temporary/generated.jpg")
         await callback.answer("Рассылка отправлена")
     except exceptions.TelegramBadRequest:
         print("OK")
 
 
-@router.callback_query(F.data == "alarmreject")
+@router.callback_query(F.data.startswith("alarmreject:"))
 async def reject_alarm_fin(callback: CallbackQuery):
-    user_inf = str(AlarmIds.get_alarm_id())[2:-3]
-    Alarm.delete_alarm(user_inf)
+    user_geo = callback.data.split(":")[1]
+    user_name = callback.data.split(":")[2]
+    Alarm.delete_alarm(user_geo, user_name)
     await callback.answer("Запрос успешно отклонен!")

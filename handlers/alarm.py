@@ -5,7 +5,7 @@ from aiogram.fsm.context import FSMContext
 import emoji
 
 from keyboards import AlarmKeyboard, ExitKeyboard, SelectionKeyboard, TutorKeyboard
-from data import Alarm, AlarmIds, Users
+from data import Alarm, Users
 from config import TelegramConfig
 from states import AlarmStates
 from misc import create_map
@@ -70,8 +70,7 @@ async def photo_handler(message: Message, state: FSMContext):
 @router.message(AlarmStates.photo, F.text == emoji.emojize("⏩ Пропустить"))
 async def note_handler_no_photo(message: Message, state: FSMContext, bot: Bot):
     ll = await state.get_data()
-    Alarm.add_alarm(message.from_user.id, *[ll[key] for key in ll])
-    AlarmIds.add_alarm_id(message.from_user.id)
+    Alarm.add_alarm(message.from_user.id, *[ll[key] for key in ll], photo="no_photo")
     await message.answer("Информация передана, скоро прибудет помощь! "
                          "Сохраняйте спокойствие, не уходите далеко от вашей нынешней геолокации "
                          "и соблюдайте меры предосторожности!", reply_markup=SelectionKeyboard.select_action_kb())
@@ -82,7 +81,8 @@ async def note_handler_no_photo(message: Message, state: FSMContext, bot: Bot):
                                f"Номер телефона: {ll['mobile']}\nФИО: {ll['name']}\nУровень заряда аккумулятора: "
                                f"{ll['charge']}\n"
                                f"Описание человека: {ll['look']}\nОписание окружающей среды: {ll['situation']}"),
-                           parse_mode=ParseMode.HTML, reply_markup=TutorKeyboard.inline_alarming_kb()
+                           parse_mode=ParseMode.HTML,
+                           reply_markup=TutorKeyboard.inline_alarming_kb(f"{ll['geo']}:{ll['name']}")
                            )
     await bot.send_photo(TelegramConfig.TUTOR_ID, create_map(ll["geo"]))
     await state.clear()
@@ -92,7 +92,6 @@ async def note_handler_no_photo(message: Message, state: FSMContext, bot: Bot):
 async def note_handler_photo(message: Message, state: FSMContext, bot: Bot):
     ll = await state.get_data()
     Alarm.add_alarm(message.from_user.id, *[ll[key] for key in ll], message.photo[-1].file_id)
-    AlarmIds.add_alarm_id(message.from_user.id)
     Users.update_alarm_count(message.from_user.id)
     await message.answer("Информация передана, скоро прибудет помощь! "
                          "Сохраняйте спокойствие, не уходите далеко от вашей нынешней геолокации "
@@ -104,7 +103,8 @@ async def note_handler_photo(message: Message, state: FSMContext, bot: Bot):
                                f"Номер телефона: {ll['mobile']}\nФИО: {ll['name']}\nУровень заряда аккумулятора: "
                                f"{ll['charge']}\n"
                                f"Описание человека: {ll['look']}\nОписание окружающей среды: {ll['situation']}"),
-                           parse_mode=ParseMode.HTML, reply_markup=TutorKeyboard.inline_alarming_kb()
+                           parse_mode=ParseMode.HTML,
+                           reply_markup=TutorKeyboard.inline_alarming_kb(f"{ll['geo']}:{ll['name']}")
                            )
     await bot.send_photo(TelegramConfig.TUTOR_ID, create_map(ll["geo"]))
     await bot.send_photo(TelegramConfig.TUTOR_ID, message.photo[-1].file_id)

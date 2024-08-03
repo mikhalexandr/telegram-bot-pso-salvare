@@ -41,5 +41,5 @@ async def help_message_handler(message: Message, state: FSMContext):
 
 @router.message(Command("form_template"))
 async def form_template_handler(message: Message):
-    await message.answer_photo(photo=FSInputFile(path="data/form-template.png"),
+    await message.answer_photo(photo=FSInputFile(path="assets/form/template.png"),
                                caption="Шаблон анкеты о пострадавшем")

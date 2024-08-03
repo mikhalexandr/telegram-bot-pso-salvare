@@ -5,11 +5,11 @@ import emoji
 
 class TutorKeyboard:
     @staticmethod
-    def inline_alarming_kb():
+    def inline_alarming_kb(user_info):
         builder = InlineKeyboardBuilder()
         builder.row(
-            InlineKeyboardButton(text=emoji.emojize("✅ Помочь!"), callback_data="letsalarm"),
-            InlineKeyboardButton(text=emoji.emojize("❌ Отклонить"), callback_data="alarmreject")
+            InlineKeyboardButton(text=emoji.emojize("✅ Помочь!"), callback_data=f"letsalarm:{user_info}"),
+            InlineKeyboardButton(text=emoji.emojize("❌ Отклонить"), callback_data=f"alarmreject:{user_info}")
         )
         return builder.as_markup()
 
