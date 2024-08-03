@@ -1,11 +1,11 @@
 from aiogram import Dispatcher
 
 from .alarm import router as alarm_router
-from .team import router as command_router
 from .default import router as default_router
 from .error import router as error_router
 from .lost import router as help_router
 from .profile import router as profile_router
+from .team import router as command_router
 from .tutor import router as tutor_router
 
 
