@@ -8,7 +8,7 @@ Telegram bot for [the search and rescue team "Salvar"](https://vk.com/wall-29141
   - a user part, where people can send messages about missing persons, join search groups, send emergency requests for help, and receive newsletters about various incidents
   -  an admin panel, where the organizer can moderate incoming bot-generated questionnaires about missing persons, requests for help and commands  
 
-There is also a panel for moderating the database, implemented using a third-party program [Adminer](https://www.adminer.org/).
+There is also a panel for moderating the database, implemented using a third-party program [Adminer](https://www.adminer.org/)
     
 > [!NOTE]
 > You can find Telegram-bot [here](https://t.me/psosalvarebot)
