@@ -1,9 +1,9 @@
 [MESSAGES CONTROL]
 
-disable=line-too-long,
-        missing-function-docstring,
+disable=missing-function-docstring,
         missing-class-docstring,
         missing-module-docstring,
+        line-too-long,
         too-many-locals,
         too-many-arguments,
         too-few-public-methods,
