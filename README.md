@@ -25,7 +25,7 @@ Telegram-bot for [the search and rescue team "Salvar"](https://vk.com/wall-29141
 ## 🎯 Quick Start
 * Clone the project to your computer from Github using the command:
 ```
-git clone https://github.com/mikhalexandr/TelegramBot-PSO-SALVARE.git
+git clone https://github.com/mikhalexandr/telegram-bot-pso-salvare.git
 ```
 
 * create `.env.bot` in the `config` directory and paste these lines there:
@@ -44,7 +44,7 @@ POSTGRES_USER=your_postgres_user_name
 POSTGRES_PASSWORD=your_postgres_password
 ```
 
-* Run this command in terminal:
+* Run this command in terminal (don't forget to run [Docker Desktop](https://www.docker.com/products/docker-desktop/) before this):
 ```
 docker-compose up
 ```
