@@ -56,4 +56,4 @@ docker-compose up
 ## 🏆 Awards
   - [Absolute winner in the regional track of the All-Russian competition of scientific and technological projects "Big Challenges. Smolensk-2024" in the nomination "Smart City and Security"](https://vk.com/wall-189705382_4434)
   - [1 degree diploma in the city School Science Week "First Steps in Science"](https://vk.com/wall-189705382_4415)
-  - [Prize-winning place in the hackathon Game of detective](https://vk.com/itcube.smolensk?z=photo-189705382_457267230%2Fwall-189705382_4142)
+  - [Prize-winning place in the hackathon "Game of Detective"](https://vk.com/itcube.smolensk?z=photo-189705382_457267230%2Fwall-189705382_4142)
