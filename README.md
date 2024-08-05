@@ -5,8 +5,8 @@
 ![Version](https://img.shields.io/badge/version-1.0-green)
 
 Telegram bot for [the search and rescue team "Salvar"](https://vk.com/wall-29141239_27643), which consists of:
-  - a user part, where people can send messages about missing persons, join search groups, send emergency requests for help, and receive newsletters about various incidents
-  -  an admin panel, where the organizer can moderate incoming bot-generated questionnaires about missing persons, requests for help and commands  
+  * a user part, where people can send messages about missing persons, join search groups, send emergency requests for help, and receive newsletters about various incidents
+  * an admin panel, where the organizer can moderate incoming bot-generated questionnaires about missing persons, requests for help and commands  
 
 There is also a panel for moderating the database, implemented using a third-party program [Adminer](https://www.adminer.org/)
     
@@ -54,6 +54,6 @@ docker-compose up
 ```
 
 ## 🏆 Awards
-  - [Absolute winner in the regional track of the All-Russian competition of scientific and technological projects "Big Challenges. Smolensk-2024" in the nomination "Smart City and Security"](https://vk.com/wall-189705382_4434)
-  - [1 degree diploma in the city School Science Week "First Steps in Science"](https://vk.com/wall-189705382_4415)
-  - [Prize-winning place in the hackathon "Game of Detective"](https://vk.com/itcube.smolensk?z=photo-189705382_457267230%2Fwall-189705382_4142)
+  * [Absolute winner in the regional track of the All-Russian competition of scientific and technological projects "Big Challenges. Smolensk-2024" in the nomination "Smart City and Security"](https://vk.com/wall-189705382_4434)
+  * [1 degree diploma in the city School Science Week "First Steps in Science"](https://vk.com/wall-189705382_4415)
+  * [Prize-winning place in the hackathon "Game of Detective"](https://vk.com/itcube.smolensk?z=photo-189705382_457267230%2Fwall-189705382_4142)
