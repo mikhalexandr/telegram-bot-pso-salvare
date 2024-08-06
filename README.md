@@ -14,7 +14,7 @@ There is also a panel for moderating the database, implemented using a third-par
 > You can find Telegram-bot [here](https://t.me/psosalvarebot)
 
 ## 📺 Preview
-![](https://github.com/mikhalexandr/telegram-bot-pso-salvare/blob/main/assets/design/preview.png)
+![preview](https://github.com/mikhalexandr/telegram-bot-pso-salvare/blob/main/assets/design/preview.png)
 
 ## 🛠️ Tech Stack
 ㅤ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
