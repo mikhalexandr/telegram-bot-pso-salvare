@@ -23,7 +23,7 @@ When reporting a vulnerability, please include the following information:
 * A clear and concise description of the vulnerability.
 * Steps to reproduce the vulnerability.
 * The impact of the vulnerability.
-* The version of Mathusha API affected.
+* The version of Telegram-bot PSO SALVARE affected.
 
 We will review all reported vulnerabilities and make every effort to address them as quickly as possible. 
 We will acknowledge receipt of your report within 5 business days and keep you updated on the progress of the issue.
