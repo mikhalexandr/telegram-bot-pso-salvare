@@ -19,7 +19,6 @@ There is also a panel for moderating the database, implemented using a third-par
 ## 🛠️ Tech Stack
 ㅤ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Aiogram](https://img.shields.io/badge/aiogram-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-![Pillow](https://img.shields.io/badge/pillow-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Yandex Static API](https://img.shields.io/badge/yandex_static_api-FF0000?style=for-the-badge)
 ![Kandinsky](https://img.shields.io/badge/kandinsky-%23000000.svg?style=for-the-badge)
